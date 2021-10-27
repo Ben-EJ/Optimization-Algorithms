@@ -92,7 +92,18 @@ void crossover() {
         }
     }
 }
-
+void mutationReals() {
+    for (int i = 0; i < P; i++) {
+        for (int j = 0; j < N; j++) {
+            float MUTPROB = (float(rand()) / float((RAND_MAX)) * 1);
+            if (MUTPROB < MUTRATE) {
+                int alter = rand() % MUTSTEP;
+                if (rand() % 2) offspring[i].gene[j] = offspring[i].gene[j] + alter;
+                else offspring[i].gene[j] = offspring[i].gene[j] - alter;
+            }
+        }
+    }
+}
 void mutation() {
     for (int i = 0; i < P; i++) {
         for (int j = 0; j < N; j++) {
@@ -103,7 +114,6 @@ void mutation() {
             }
         }
     }
-    
     
     for (int i = 0; i < P; i++) {
         for (int j = 0; j < N; j++) {
