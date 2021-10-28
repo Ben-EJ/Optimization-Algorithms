@@ -2,10 +2,16 @@
 //
 
 #include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
 const int N = 10;
-const int P = 16;
+const int P = 50;
 const float MUTRATE = 0.1;
+const float MUTSTEP = 0.1;
+const float LOOPTIMES = 50;
 typedef struct {
     int gene[N];
     int fitness;
@@ -97,11 +103,18 @@ void mutationReals() {
         for (int j = 0; j < N; j++) {
             float MUTPROB = (float(rand()) / float((RAND_MAX)) * 1);
             if (MUTPROB < MUTRATE) {
-                int alter = rand() % MUTSTEP;
+                int alter = (float(rand()) / float((RAND_MAX)) * MUTSTEP);
                 if (rand() % 2) offspring[i].gene[j] = offspring[i].gene[j] + alter;
                 else offspring[i].gene[j] = offspring[i].gene[j] - alter;
             }
         }
+    }
+
+    for (int i = 0; i < P; i++) {
+        for (int j = 0; j < N; j++) {
+            population[i].gene[j] = offspring[i].gene[j];
+        }
+        population[i].fitness = offspring[i].fitness;
     }
 }
 void mutation() {
@@ -130,20 +143,30 @@ int totalFitness(individual pop[P]) {
     }
     return totalFitnessNum;
 }
+int bestFitness() {
+    int bestFitness = population[0].fitness;
+
+    for (int x = 1; x < P; x++) {
+        if (population[x].fitness > bestFitness) {
+            bestFitness = population[x].fitness;
+        }
+    }
+    return bestFitness;
+}
 void main()
 {
     srand(time(NULL));
     generatePopulation();
     testFitness();
     cout << "Total Fitness inital: " << totalFitness(population);
-   
-    for (int i = 0; i < 50; i++) {
+    
+    for (int i = 0; i < LOOPTIMES; i++) {
         selection();
         crossover();
-        mutation();
+        mutationReals();
+        //mutation();
         testFitness();
     }
     cout << "\n";
     cout << "Total Fitness after: " << totalFitness(population); 
 }
-
