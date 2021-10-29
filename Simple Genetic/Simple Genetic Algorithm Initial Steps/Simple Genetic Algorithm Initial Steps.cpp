@@ -5,6 +5,10 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <fstream>
+#include <cstring>
+#include <cmath>
+
 
 using namespace std;
 const int N = 10;
@@ -12,12 +16,11 @@ const int P = 50;
 const float MUTRATE = 0.1;
 const float MUTSTEP = 0.1;
 const float LOOPTIMES = 50;
+
 typedef struct {
     int gene[N];
     int fitness;
 } individual;
-
-
 
 individual population[P];
 individual offspring[P];
@@ -98,6 +101,7 @@ void crossover() {
         }
     }
 }
+
 void mutationReals() {
     for (int i = 0; i < P; i++) {
         for (int j = 0; j < N; j++) {
@@ -117,6 +121,7 @@ void mutationReals() {
         population[i].fitness = offspring[i].fitness;
     }
 }
+
 void mutation() {
     for (int i = 0; i < P; i++) {
         for (int j = 0; j < N; j++) {
@@ -155,11 +160,13 @@ int bestFitness() {
 }
 void main()
 {
+    ofstream csvFile;
+    csvFile.open("/Users/benja/Desktop/Year 3/Bio/Worksheet1Bio/Simple Genetic/GA Graph.csv", std::ios::in | std::ios::out | std::ios::ate);
     srand(time(NULL));
     generatePopulation();
     testFitness();
     cout << "Total Fitness inital: " << totalFitness(population);
-    
+    csvFile << "Beans";
     for (int i = 0; i < LOOPTIMES; i++) {
         selection();
         crossover();
