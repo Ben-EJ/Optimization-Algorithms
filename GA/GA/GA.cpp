@@ -6,7 +6,6 @@
 #include <cstring>
 #include <cmath>
 #include "plplot\plstream.h"
-
 using namespace std;
 const int N = 10;
 const int P = 50;
@@ -100,7 +99,7 @@ void crossover() {
     }
 }
 
-void mutationReals() {
+void mutationReals() {// Worksheet 3 mutation
     for (int i = 0; i < P; i++) {
         for (int j = 0; j < N; j++) {
             float MUTPROB = (float(rand()) / float((RAND_MAX)) * 1);
@@ -120,7 +119,7 @@ void mutationReals() {
     }
 }
 
-void mutation() {
+void mutation() {// Worksheet 2 mutation
     for (int i = 0; i < P; i++) {
         for (int j = 0; j < N; j++) {
             float MUTPROB = (float(rand()) / float((RAND_MAX)) * 1);
@@ -157,23 +156,55 @@ int bestFitness() {
     return bestFitness;
 }
 
+int meanFitness() {
+    int meanFitnessAdd = 0;
+    int meanFitnessDiv = 0;
+    for (int x = 1; x < P; x++) {
+        meanFitnessAdd = meanFitnessAdd + population[x].fitness;
+    }
+    meanFitnessDiv = meanFitnessAdd / P;
+    return meanFitnessDiv;
+}
+
 int bestEachGen[50];
-void drawGraph() {
+int meanFitnessGen[50]; // Mean fitness for each generation
+
+void drawGraphBestFitness() {
     PLFLT x[NSIZE], y[NSIZE];
+    
     PLFLT xmin = 0, xmax = 50, ymin = 0, ymax = 11;
+    
     for (int i = 0; i < NSIZE; i++) {
         x[i] = i;
         y[i] = bestEachGen[i];
     }
+
     auto pls = new plstream();
     plsdev("wingcc");
     pls->init();
     pls->env(xmin, xmax, ymin, ymax, 0, 0);
-    pls->lab("Generation", "Fitness", "GA Fitness");
+    pls->lab("Generation", "Fitness", "GA Fitness Best per Generation");
     pls->line(NSIZE, x, y);
+ 
     delete pls;
 }
 
+void drawGraphMeanFitness() {
+    PLFLT x[NSIZE], y[NSIZE];
+    PLFLT xmin = 0, xmax = 50, ymin = 0, ymax = 11;
+
+    for (int i = 0; i < NSIZE; i++) {
+        x[i] = i;
+        y[i] = meanFitnessGen[i];
+    }
+    auto plot = new plstream();
+    plsdev("wingcc");
+    plot->init();
+    plot->env(xmin, xmax, ymin, ymax, 0, 0);
+    plot->lab("Generation", "Fitness", "GA Fitness Mean Per Generation");
+    plot->line(NSIZE, x, y);
+    delete plot;
+}
 
 void main()
 {
@@ -191,6 +222,7 @@ void main()
         //mutation();
         testFitness();
         bestEachGen[i] = bestFitness();
+        meanFitnessGen[i] = meanFitness();
     }
     cout << "\n";
     cout << "Total Fitness after: " << totalFitness(population);
@@ -198,7 +230,8 @@ void main()
         cout << bestEachGen[i] << "\n";
     }
     
-    drawGraph();
+    drawGraphBestFitness();
+    drawGraphMeanFitness();
 }
 
 
