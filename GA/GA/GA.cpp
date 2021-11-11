@@ -5,7 +5,7 @@
 #include <fstream>
 #include <cstring>
 #include <cmath>
-#include "plplot\plstream.h"
+//#include "plplot\plstream.h"
 using namespace std;
 const int N = 10;
 const int P = 50;
@@ -15,18 +15,17 @@ const float GEN = 50;
 const int NSIZE = 50;
 
 typedef struct {
-    int gene[N];
-    int fitness;
+    float gene[N];
+    float fitness;
 } individual;
 
 individual population[P];
 individual offspring[P];
 
 void fitnessFunc(individual& ind) {
-    int fitness = 0;
+    float fitness = 0;
     for (int i = 0; i < N; i++) {
-        if (ind.gene[i] == 1)
-            fitness += 1;
+        fitness = fitness + ind.gene[i];
     }
     ind.fitness = fitness;
 }
@@ -36,6 +35,15 @@ void generatePopulation() {
         for (int j = 0; j < N; j++) {
 
             population[i].gene[j] = rand() % 2;
+        }
+        population[i].fitness = 0;
+    }
+}
+void generatePopulationReals() {
+    for (int i = 0; i < P; i++) {
+        for (int j = 0; j < N; j++) {
+
+            population[i].gene[j] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         }
         population[i].fitness = 0;
     }
@@ -166,52 +174,52 @@ int meanFitness() {
     return meanFitnessDiv;
 }
 
-int bestEachGen[50];
-int meanFitnessGen[50]; // Mean fitness for each generation
+float bestEachGen[50];
+float meanFitnessGen[50]; // Mean fitness for each generation
 
-void drawGraphBestFitness() {
-    PLFLT x[NSIZE], y[NSIZE];
-    
-    PLFLT xmin = 0, xmax = 50, ymin = 0, ymax = 11;
-    
-    for (int i = 0; i < NSIZE; i++) {
-        x[i] = i;
-        y[i] = bestEachGen[i];
-    }
-
-    auto pls = new plstream();
-    plsdev("wingcc");
-    pls->init();
-    pls->env(xmin, xmax, ymin, ymax, 0, 0);
-    pls->lab("Generation", "Fitness", "GA Fitness Best per Generation");
-    pls->line(NSIZE, x, y);
- 
-    delete pls;
-}
-
-void drawGraphMeanFitness() {
-    PLFLT x[NSIZE], y[NSIZE];
-    PLFLT xmin = 0, xmax = 50, ymin = 0, ymax = 11;
-
-    for (int i = 0; i < NSIZE; i++) {
-        x[i] = i;
-        y[i] = meanFitnessGen[i];
-    }
-    auto plot = new plstream();
-    plsdev("wingcc");
-    plot->init();
-    plot->env(xmin, xmax, ymin, ymax, 0, 0);
-    plot->lab("Generation", "Fitness", "GA Fitness Mean Per Generation");
-    plot->line(NSIZE, x, y);
-    delete plot;
-}
+//void drawGraphBestFitness() {
+//    PLFLT x[NSIZE], y[NSIZE];
+//    
+//    PLFLT xmin = 0, xmax = 50, ymin = 0, ymax = 11;
+//    
+//    for (int i = 0; i < NSIZE; i++) {
+//        x[i] = i;
+//        y[i] = bestEachGen[i];
+//    }
+//
+//    auto pls = new plstream();
+//    plsdev("wingcc");
+//    pls->init();
+//    pls->env(xmin, xmax, ymin, ymax, 0, 0);
+//    pls->lab("Generation", "Fitness", "GA Fitness Best per Generation");
+//    pls->line(NSIZE, x, y);
+// 
+//    delete pls;
+//}
+//
+//void drawGraphMeanFitness() {
+//    PLFLT x[NSIZE], y[NSIZE];
+//    PLFLT xmin = 0, xmax = 50, ymin = 0, ymax = 11;
+//
+//    for (int i = 0; i < NSIZE; i++) {
+//        x[i] = i;
+//        y[i] = meanFitnessGen[i];
+//    }
+//    auto plot = new plstream();
+//    plsdev("wingcc");
+//    plot->init();
+//    plot->env(xmin, xmax, ymin, ymax, 0, 0);
+//    plot->lab("Generation", "Fitness", "GA Fitness Mean Per Generation");
+//    plot->line(NSIZE, x, y);
+//    delete plot;
+//}
 
 void main()
 {
     ofstream csvFile;
     csvFile.open("/Users/benja/Desktop/Year 3/Bio/Worksheet1Bio/Simple Genetic/GA Graph.csv", std::ios::in | std::ios::out | std::ios::ate);
     srand(time(NULL));
-    generatePopulation();
+    generatePopulationReals();
     testFitness();
     cout << "Total Fitness inital: " << totalFitness(population);
     csvFile << "Beans";
@@ -229,9 +237,10 @@ void main()
     for (int i = 9; i < 50; i++) {
         cout << bestEachGen[i] << "\n";
     }
+    //printMainPop();
     
-    drawGraphBestFitness();
-    drawGraphMeanFitness();
+    //drawGraphBestFitness();
+    //drawGraphMeanFitness();
 }
 
 

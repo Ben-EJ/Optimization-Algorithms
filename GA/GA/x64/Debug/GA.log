@@ -1,7 +1,14 @@
 ﻿  GA.cpp
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GA\GA\GA.cpp(12,26): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GA\GA\GA.cpp(13,26): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GA\GA\GA.cpp(107,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GA\GA\GA.cpp(210,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GA\GA\GA.cpp(213,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  GA.vcxproj -> C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GA\x64\Debug\GA.exe
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\GA\GA.cpp(12,26): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\GA\GA.cpp(13,26): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\GA\GA.cpp(37,44): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\GA\GA.cpp(115,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\GA\GA.cpp(152,43): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\GA\GA.cpp(157,21): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\GA\GA.cpp(161,40): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\GA\GA.cpp(171,41): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\GA\GA.cpp(218,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\GA\GA.cpp(221,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\GA\GA.cpp(232,37): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\GA\GA.cpp(233,40): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  GA.vcxproj -> C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GA\x64\Debug\GA.exe
