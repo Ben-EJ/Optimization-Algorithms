@@ -5,11 +5,11 @@
 #include <fstream>
 #include <cstring>
 #include <cmath>
-//#include "plplot\plstream.h"
+#include "plplot\plstream.h"
 using namespace std;
 const int N = 10;
 const int P = 50;
-const float MUTRATE = 0.1;
+const float MUTRATE = 0.9;
 const float MUTSTEP = 0.1;
 const float GEN = 50;
 const int NSIZE = 50;
@@ -30,22 +30,12 @@ void fitnessFunc(individual& ind) {
     ind.fitness = fitness;
 }
 
-void generatePopulation() {
-    for (int i = 0; i < P; i++) {
-        for (int j = 0; j < N; j++) {
-
-            population[i].gene[j] = rand() % 2;
-        }
-        population[i].fitness = 0;
-    }
-}
 void generatePopulationReals() {
     for (int i = 0; i < P; i++) {
         for (int j = 0; j < N; j++) {
-
-            population[i].gene[j] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            population[i].gene[j] = (float(rand()) / float((RAND_MAX)) * 1);
         }
-        population[i].fitness = 0;
+        population[i].fitness = 0.0;
     }
 }
 void printMainPop() {
@@ -112,7 +102,7 @@ void mutationReals() {// Worksheet 3 mutation
         for (int j = 0; j < N; j++) {
             float MUTPROB = (float(rand()) / float((RAND_MAX)) * 1);
             if (MUTPROB < MUTRATE) {
-                int alter = (float(rand()) / float((RAND_MAX)) * MUTSTEP);
+                float alter = (float(rand()) / float((RAND_MAX)) * MUTSTEP);
                 if (rand() % 2) offspring[i].gene[j] = offspring[i].gene[j] + alter;
                 else offspring[i].gene[j] = offspring[i].gene[j] - alter;
             }
@@ -127,34 +117,15 @@ void mutationReals() {// Worksheet 3 mutation
     }
 }
 
-void mutation() {// Worksheet 2 mutation
-    for (int i = 0; i < P; i++) {
-        for (int j = 0; j < N; j++) {
-            float MUTPROB = (float(rand()) / float((RAND_MAX)) * 1);
-            if (MUTPROB < MUTRATE) {
-                if (offspring[i].gene[j] == 1) offspring[i].gene[j] = 0;
-                else offspring[i].gene[j] = 1;
-            }
-        }
-    }
-
-    for (int i = 0; i < P; i++) {
-        for (int j = 0; j < N; j++) {
-            population[i].gene[j] = offspring[i].gene[j];
-        }
-        population[i].fitness = offspring[i].fitness;
-    }
-
-}
 int totalFitness(individual pop[P]) {
-    int totalFitnessNum = 0;
+    float totalFitnessNum = 0;
     for (int i = 0; i < P; i++) {
         totalFitnessNum = totalFitnessNum + pop[i].fitness;
     }
     return totalFitnessNum;
 }
 int bestFitness() {
-    int bestFitness = population[0].fitness;
+    float bestFitness = population[0].fitness;
 
     for (int x = 1; x < P; x++) {
         if (population[x].fitness > bestFitness) {
@@ -165,8 +136,8 @@ int bestFitness() {
 }
 
 int meanFitness() {
-    int meanFitnessAdd = 0;
-    int meanFitnessDiv = 0;
+    float meanFitnessAdd = 0;
+    float meanFitnessDiv = 0;
     for (int x = 1; x < P; x++) {
         meanFitnessAdd = meanFitnessAdd + population[x].fitness;
     }
@@ -177,42 +148,42 @@ int meanFitness() {
 float bestEachGen[50];
 float meanFitnessGen[50]; // Mean fitness for each generation
 
-//void drawGraphBestFitness() {
-//    PLFLT x[NSIZE], y[NSIZE];
-//    
-//    PLFLT xmin = 0, xmax = 50, ymin = 0, ymax = 11;
-//    
-//    for (int i = 0; i < NSIZE; i++) {
-//        x[i] = i;
-//        y[i] = bestEachGen[i];
-//    }
-//
-//    auto pls = new plstream();
-//    plsdev("wingcc");
-//    pls->init();
-//    pls->env(xmin, xmax, ymin, ymax, 0, 0);
-//    pls->lab("Generation", "Fitness", "GA Fitness Best per Generation");
-//    pls->line(NSIZE, x, y);
-// 
-//    delete pls;
-//}
-//
-//void drawGraphMeanFitness() {
-//    PLFLT x[NSIZE], y[NSIZE];
-//    PLFLT xmin = 0, xmax = 50, ymin = 0, ymax = 11;
-//
-//    for (int i = 0; i < NSIZE; i++) {
-//        x[i] = i;
-//        y[i] = meanFitnessGen[i];
-//    }
-//    auto plot = new plstream();
-//    plsdev("wingcc");
-//    plot->init();
-//    plot->env(xmin, xmax, ymin, ymax, 0, 0);
-//    plot->lab("Generation", "Fitness", "GA Fitness Mean Per Generation");
-//    plot->line(NSIZE, x, y);
-//    delete plot;
-//}
+void drawGraphBestFitness() {
+    PLFLT x[NSIZE], y[NSIZE];
+    
+    PLFLT xmin = 0, xmax = 50, ymin = 0, ymax = 20;
+    
+    for (int i = 0; i < NSIZE; i++) {
+        x[i] = i;
+        y[i] = bestEachGen[i];
+    }
+
+    auto pls = new plstream();
+    plsdev("wingcc");
+    pls->init();
+    pls->env(xmin, xmax, ymin, ymax, 0, 0);
+    pls->lab("Generation", "Fitness", "GA Fitness Best per Generation");
+    pls->line(NSIZE, x, y);
+ 
+    delete pls;
+}
+
+void drawGraphMeanFitness() {
+    PLFLT x[NSIZE], y[NSIZE];
+    PLFLT xmin = 0, xmax = 50, ymin = 0, ymax = 20;
+
+    for (int i = 0; i < NSIZE; i++) {
+        x[i] = i;
+        y[i] = meanFitnessGen[i];
+    }
+    auto plot = new plstream();
+    plsdev("wingcc");
+    plot->init();
+    plot->env(xmin, xmax, ymin, ymax, 0, 0);
+    plot->lab("Generation", "Fitness", "GA Fitness Mean Per Generation");
+    plot->line(NSIZE, x, y);
+    delete plot;
+}
 
 void main()
 {
@@ -227,20 +198,19 @@ void main()
         selection();
         crossover();
         mutationReals();
-        //mutation();
         testFitness();
         bestEachGen[i] = bestFitness();
         meanFitnessGen[i] = meanFitness();
     }
     cout << "\n";
     cout << "Total Fitness after: " << totalFitness(population);
-    for (int i = 9; i < 50; i++) {
+    for (int i = 0; i < 50; i++) {
         cout << bestEachGen[i] << "\n";
     }
     //printMainPop();
     
-    //drawGraphBestFitness();
-    //drawGraphMeanFitness();
+    drawGraphBestFitness();
+    drawGraphMeanFitness();
 }
 
 
