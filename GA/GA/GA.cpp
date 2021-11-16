@@ -21,8 +21,9 @@ typedef struct {
 
 individual population[P];
 individual offspring[P];
-
-void fitnessFunc(individual& ind) {
+const float MIN = -5.13; // Use these everywhere 
+const float MAX = 1;
+void fitnessFunc(individual& ind) {//New fitness function at the bottom of worksheet 3
     float fitness = 0;
     for (int i = 0; i < N; i++) {
         fitness = fitness + ind.gene[i];
@@ -73,7 +74,7 @@ void selection() {
     for (int i = 0; i < P; i++) {
         parent1 = rand() % P;
         parent2 = rand() % P;
-        if (population[parent1].fitness > population[parent2].fitness) {
+        if (population[parent1].fitness > population[parent2].fitness) {// Turn this around for minimum
             offspring[i] = population[parent1];
         }
         else {
@@ -124,7 +125,7 @@ int totalFitness(individual pop[P]) {
     }
     return totalFitnessNum;
 }
-int bestFitness() {
+int bestFitness() {// Finding the worst for minimum, Switch arrow around
     float bestFitness = population[0].fitness;
 
     for (int x = 1; x < P; x++) {
@@ -214,3 +215,6 @@ void main()
 }
 
 
+// In selection take the lowest of each gen turn arrow around
+// 
+// 

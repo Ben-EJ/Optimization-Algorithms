@@ -1,0 +1,18 @@
+﻿  GAMin.cpp
+C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(13,26): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(14,26): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(26,24): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(27,23): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(33,57): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(136,12): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(146,12): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(162,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
+C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(163,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(172,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(173,40): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Generating code
+  0 of 152 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  GAMin.vcxproj -> C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\Release\GAMin.exe
