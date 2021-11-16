@@ -9,10 +9,12 @@
 
 using namespace std;
 const int N = 10;
-const int Pop = 50;
-const float MUTRATE = 0.1;
-const float MUTSTEP = 0.1;
-const float GEN = 50;
+const int Pop = 300;
+
+const float MUTRATE = 0.04;
+const float MUTSTEP = 0.03;
+
+const int GEN = 1500;
 
 
 typedef struct {
@@ -46,30 +48,7 @@ void generatePopulationReals() {
         population[i].fitness = 0.0;
     }
 }
-void printMainPop() {
-    for (int i = 0; i < Pop; i++) {
-        cout << "Gene\n";
-        for (int x = 0; x < 10; x++) {
-            cout << population[i].gene[x] << " ";
-        }
-        cout << "\n";
-        cout << "Fitness\n";
-        cout << population[i].fitness << "\n";
-        cout << "\n";
-    }
-}
-void printOffspringPop() {
-    for (int i = 0; i < Pop; i++) {
-        cout << "Gene\n";
-        for (int x = 0; x < 10; x++) {
-            cout << offspring[i].gene[x];
-        }
-        cout << "\n";
-        cout << "Fitness\n";
-        cout << offspring[i].fitness << "\n";
-        cout << "\n";
-    }
-}
+
 void testFitness() {
     for (int i = 0; i < Pop; i++) {
         fitnessFunc(population[i]);
@@ -146,13 +125,19 @@ int meanFitness() {
     return meanFitnessDiv;
 }
 
-float minEachGen[Pop];
-float meanFitnessGen[Pop]; // Mean fitness for each generation
+float minEachGen[GEN];
+float meanFitnessGen[GEN]; // Mean fitness for each generation
 
-void pythonOpenGraph() {
+void exportData() {
     std::ofstream myfile;
     myfile.open("DataMin.csv");
-    for (int i = 0; i < 50; i++) {
+
+    myfile << N << ",";
+    myfile << Pop << ",";
+    myfile << MUTRATE << ",";
+    myfile << MUTSTEP << ",";
+    myfile << GEN << ",";
+    for (int i = 0; i < GEN; i++) {
         myfile << minEachGen[i] << ",";
     }
     
@@ -163,7 +148,6 @@ void main()
     srand(time(NULL));
     generatePopulationReals();
     testFitness();
-    //cout << "Total Fitness inital: " << totalFitness(population);
     for (int i = 0; i < GEN; i++) {
         selectionMin();
         crossover();
@@ -172,13 +156,8 @@ void main()
         minEachGen[i] = minFitness();
         meanFitnessGen[i] = meanFitness();
     }
-    cout << "\n";
-    
-    /*for (int i = 0; i < 50; i++) {
-        cout << minEachGen[i] << "\n";
-    }*/
-    printMainPop();
-    pythonOpenGraph();
+    cout << "\n";  
+    exportData();
    
 }
 
