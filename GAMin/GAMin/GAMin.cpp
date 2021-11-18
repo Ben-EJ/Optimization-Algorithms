@@ -5,16 +5,16 @@
 #include <fstream>
 #include <cstring>
 #include <cmath>
-#include <python.h>
+
 
 using namespace std;
 const int N = 10;
-const int Pop = 300;
+const int Pop = 100;
 
 const float MUTRATE = 0.04;
-const float MUTSTEP = 0.03;
+const float MUTSTEP = 2.55;
 
-const int GEN = 1500;
+const int GEN = 400;
 
 
 typedef struct {
@@ -32,6 +32,7 @@ void fitnessFunc(individual& ind) {//New fitness function at the bottom of works
     float fitness = 10 * N;
     for (int i = 0; i < N; i++) {
         //fitness = fitness + ind.gene[i];
+
         fitness = fitness + (ind.gene[i] * ind.gene[i]) - (10 * cos((2 * 3.14) * ind.gene[i]));
     }
     ind.fitness = fitness;
@@ -90,8 +91,15 @@ void mutationReals() {// Worksheet 3 mutation
             float MUTPROB = (float(rand()) / float((RAND_MAX)) * 1);
             if (MUTPROB < MUTRATE) {
                 float alter = (float(rand()) / float((RAND_MAX)) * MUTSTEP);
-                if (offspring[i].gene[j] + alter < 5.12) offspring[i].gene[j] = offspring[i].gene[j] + alter;
-                else offspring[i].gene[j] = offspring[i].gene[j] - alter;
+                int coinFlip = rand() % 2;
+                if (coinFlip == 1) {
+                    offspring[i].gene[j] = offspring[i].gene[j] + alter;
+                    if (offspring[i].gene[j] > 5.12) offspring[i].gene[j] = 5.12;
+                }
+                else {
+                    offspring[i].gene[j] = offspring[i].gene[j] - alter;
+                    if (offspring[i].gene[j] < -5.12) offspring[i].gene[j] = -5.12;
+                }
             }
         }
     }

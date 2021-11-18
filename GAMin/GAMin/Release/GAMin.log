@@ -1,18 +1,20 @@
 ﻿  GAMin.cpp
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(14,27): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(15,27): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(28,24): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(29,23): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(35,57): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(115,12): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(125,12): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(147,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(148,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(156,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(157,40): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(14,27): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(15,27): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(28,24): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(29,23): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(36,57): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(97,81): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(101,83): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(123,12): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(133,12): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(155,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(156,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(164,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\GAMin\GAMin.cpp(165,40): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Generating code
   9 of 151 functions ( 6.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  GAMin.vcxproj -> C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GAMin\Release\GAMin.exe
+  GAMin.vcxproj -> C:\Users\benja\Desktop\Year 3 Work\Work\Bio\Projects\Worksheet1Bio\GAMin\Release\GAMin.exe

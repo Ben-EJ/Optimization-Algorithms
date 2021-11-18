@@ -30,7 +30,7 @@ def popGen():
     data = []
     for i in range(0, int(Gen)):
         data.append(i)
-    return data[::-1]
+    return data
 
 print(csvData[0])
 print("N: " + N)
@@ -46,7 +46,7 @@ plt.xlabel("Generation", fontsize=15)
 plt.ylabel("Min fitness",  fontsize=15)
 
 ypoints = np.array(csvData[0][::-1])
-xpoints = np.array(popGen())
+xpoints = np.array(popGen()[::-1])
 
 plt.plot(xpoints, ypoints)
 
