@@ -17,6 +17,7 @@ const float MUTSTEP = 2.55;
 const int GEN = 400;
 
 
+
 typedef struct {
     float gene[N];
     float fitness;
@@ -38,6 +39,22 @@ void fitnessFunc(individual& ind) {//New fitness function at the bottom of works
     ind.fitness = fitness;
     
 }
+void fitnessFunc2(individual& ind) {
+    float fitness = 0;
+    for (int i = 0; i < N-1; i++) {
+        int step1 = 0;
+        int step2 = 0;
+        step1 = 100 * (ind.gene[i + 1] - (ind.gene[i] * ind.gene[i]));
+        step2 = step1 * step1;
+        fitness = fitness + step2 + ((1 - ind.gene[i]) * (1 - ind.gene[i]));
+    }
+}
+void testFitness() {
+    for (int i = 0; i < Pop; i++) {
+        fitnessFunc(population[i]);
+        //fitnessFunc2(population[i]);
+    }
+}
 
 void generatePopulationReals() {
     for (int i = 0; i < Pop; i++) {
@@ -50,11 +67,14 @@ void generatePopulationReals() {
     }
 }
 
-void testFitness() {
+int populationFitnessTotal() {
+    int totalFit = 0;
     for (int i = 0; i < Pop; i++) {
-        fitnessFunc(population[i]);
+        totalFit = totalFit + population[i].fitness;
     }
+    return totalFit;
 }
+
 void selectionMin() {
     int parent1 = 0;
     int parent2 = 0;
@@ -71,6 +91,20 @@ void selectionMin() {
 
 }
 
+void selectionRoulette() {
+    int population_fitness_total = populationFitnessTotal();
+
+    for (int i = 0; i < Pop; i++) {
+        int selection_point = rand() % population_fitness_total;
+        int running_total = 0;
+        int j = 0;
+        while (running_total <= selection_point) {
+            running_total += population[j].fitness;
+            j++;
+        }
+        offspring[i] = population[j - 1];
+    }
+}
 void crossover() {
     individual temp;
     for (int i = 0; i < Pop; i += 2) {
@@ -94,11 +128,11 @@ void mutationReals() {// Worksheet 3 mutation
                 int coinFlip = rand() % 2;
                 if (coinFlip == 1) {
                     offspring[i].gene[j] = offspring[i].gene[j] + alter;
-                    if (offspring[i].gene[j] > 5.12) offspring[i].gene[j] = 5.12;
+                    if (offspring[i].gene[j] > MAX) offspring[i].gene[j] = MAX;
                 }
                 else {
                     offspring[i].gene[j] = offspring[i].gene[j] - alter;
-                    if (offspring[i].gene[j] < -5.12) offspring[i].gene[j] = -5.12;
+                    if (offspring[i].gene[j] < MIN) offspring[i].gene[j] = MIN;
                 }
             }
         }
@@ -157,7 +191,8 @@ void main()
     generatePopulationReals();
     testFitness();
     for (int i = 0; i < GEN; i++) {
-        selectionMin();
+        //selectionMin();
+        selectionRoulette();
         crossover();
         mutationReals();
         testFitness();
