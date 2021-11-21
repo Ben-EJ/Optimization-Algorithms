@@ -8,15 +8,13 @@
 
 
 using namespace std;
-const int N = 10;
-const int Pop = 100;
+const int N = 20;
+const int Pop = 50;
 
 const float MUTRATE = 0.04;
-const float MUTSTEP = 2.55;
+const float MUTSTEP = 1.5;
 
-const int GEN = 400;
-
-
+const int GEN = 1000;
 
 typedef struct {
     float gene[N];
@@ -26,29 +24,35 @@ typedef struct {
 individual population[Pop];
 individual offspring[Pop];
 
-const float MIN = -5.12; // Use these everywhere 
-const float MAX = 5.12;
+const float MIN = -100; // Use these everywhere 
+const float MAX = 100;
+
 
 void fitnessFunc(individual& ind) {//New fitness function at the bottom of worksheet 3
     float fitness = 10 * N;
     for (int i = 0; i < N; i++) {
         //fitness = fitness + ind.gene[i];
-
         fitness = fitness + (ind.gene[i] * ind.gene[i]) - (10 * cos((2 * 3.14) * ind.gene[i]));
+        
     }
     ind.fitness = fitness;
     
 }
+
 void fitnessFunc2(individual& ind) {
     float fitness = 0;
-    for (int i = 0; i < N-1; i++) {
+    for (int i = 0; i < N - 1; i++) {
         int step1 = 0;
         int step2 = 0;
-        step1 = 100 * (ind.gene[i + 1] - (ind.gene[i] * ind.gene[i]));
-        step2 = step1 * step1;
-        fitness = fitness + step2 + ((1 - ind.gene[i]) * (1 - ind.gene[i]));
+        step1 = pow(ind.gene[i + 1] - pow(ind.gene[i], 2), 2);
+        step2 = pow(1 - ind.gene[i], 2);
+        fitness = fitness + (100 * (step1 + step2));
+
+        //fitness = fitness +  (100 * (ind.gene[i + 1] - pow(ind.gene[i], 2))    +    pow(1 - ind.gene[i], 2) );
     }
+    ind.fitness = fitness;
 }
+
 void testFitness() {
     for (int i = 0; i < Pop; i++) {
         fitnessFunc(population[i]);
@@ -60,7 +64,7 @@ void generatePopulationReals() {
     for (int i = 0; i < Pop; i++) {
         for (int j = 0; j < N; j++) {
             
-            population[i].gene[j] = ((float(rand()) / float(RAND_MAX)) * (MAX - MIN)) + MIN;
+            population[i].gene[j] = ((float(rand()) / float(RAND_MAX)) * (MAX - MIN)) + MIN; 
             
         }
         population[i].fitness = 0.0;
@@ -93,10 +97,11 @@ void selectionMin() {
 
 void selectionRoulette() {
     int population_fitness_total = populationFitnessTotal();
-
+    
     for (int i = 0; i < Pop; i++) {
         int selection_point = rand() % population_fitness_total;
         int running_total = 0;
+
         int j = 0;
         while (running_total <= selection_point) {
             running_total += population[j].fitness;
@@ -160,7 +165,7 @@ int minFitness() {// Finding the worst for minimum, Switch arrow around
 int meanFitness() {
     float meanFitnessAdd = 0;
     float meanFitnessDiv = 0;
-    for (int x = 1; x < Pop; x++) {
+    for (int x = 0; x < Pop; x++) {
         meanFitnessAdd = meanFitnessAdd + population[x].fitness;
     }
     meanFitnessDiv = meanFitnessAdd / Pop;
@@ -170,7 +175,7 @@ int meanFitness() {
 float minEachGen[GEN];
 float meanFitnessGen[GEN]; // Mean fitness for each generation
 
-void exportData() {
+void exportDataBest() {
     std::ofstream myfile;
     myfile.open("DataMin.csv");
 
@@ -185,14 +190,38 @@ void exportData() {
     
     myfile.close();
 }
+void exportDataMean() {
+    std::ofstream myfile;
+    myfile.open("DataMinMean.csv");
+    for (int i = 0; i < GEN; i++) {
+        myfile << meanFitnessGen[i] << ",";
+    }
+
+    myfile.close();
+}
+
+void printMainPop() {
+    for (int i = 0; i < Pop; i++) {
+        cout << "Gene\n";
+        for (int x = 0; x < 10; x++) {
+            cout << population[i].gene[x] << " , ";
+        }
+        cout << "\n";
+        cout << "Fitness\n";
+        cout << population[i].fitness << "\n";
+        cout << "\n";
+    }
+}
+
 void main()
 {
     srand(time(NULL));
     generatePopulationReals();
     testFitness();
+    printMainPop();
     for (int i = 0; i < GEN; i++) {
-        //selectionMin();
-        selectionRoulette();
+        selectionMin();
+        //selectionRoulette();
         crossover();
         mutationReals();
         testFitness();
@@ -200,8 +229,8 @@ void main()
         meanFitnessGen[i] = meanFitness();
     }
     cout << "\n";  
-    exportData();
-   
+    exportDataBest();
+    exportDataMean();
 }
 
 

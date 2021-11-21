@@ -1,3 +1,4 @@
+
 import matplotlib.pyplot as plt
 import numpy as np
 import csv
@@ -25,6 +26,12 @@ with open("DataMin.csv", "r") as csv_file1:
     csvData[0].pop(0)
     csvData[0].pop()
     
+with open("DataMinMean.csv", "r") as csv_file1:
+    csvDataMean = []
+    csv_reader1 = csv.reader(csv_file1)
+    csvDataMean = list(csv_reader1)
+
+    csvDataMean[0].pop()
 
 def popGen():
     data = []
@@ -39,15 +46,21 @@ print("MUTRATE: " + MUTRATE)
 print("MUTSTEP: " + MUTSTEP)
 print("GEN: " + Gen)
 
-plt.figure(figsize=(15,10))
+plt.figure(figsize=(20,10))
 plt.figtext(0.5, 0.01, "N: " + N + " / " + "POP: " + Pop + " / " + "MUTRATE: " + MUTRATE + " / " + "MUTSTEP: " + MUTSTEP + " / " + "GEN: " + Gen + " ",horizontalalignment = "center",  fontsize=20, bbox={"facecolor":"white", "alpha":0.5, "pad":10, })
 
 plt.xlabel("Generation", fontsize=15)
 plt.ylabel("Min fitness",  fontsize=15)
 
+
+
 ypoints = np.array(csvData[0][::-1])
 xpoints = np.array(popGen()[::-1])
 
+zpoints = np.array(csvDataMean[0][::-1])
+vpoints = np.array(popGen()[::-1])
+
 plt.plot(xpoints, ypoints)
 
+plt.plot(zpoints ,color="red")
 plt.show()

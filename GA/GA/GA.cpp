@@ -21,7 +21,7 @@ typedef struct {
 
 individual population[P];
 individual offspring[P];
-const float MIN = -5.13; // Use these everywhere 
+const float MIN = 0; // Use these everywhere 
 const float MAX = 1;
 void fitnessFunc(individual& ind) {//New fitness function at the bottom of worksheet 3
     float fitness = 0;
