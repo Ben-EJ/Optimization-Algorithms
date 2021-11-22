@@ -55,12 +55,10 @@ plt.ylabel("Min fitness",  fontsize=15)
 
 
 ypoints = np.array(csvData[0][::-1])
-xpoints = np.array(popGen()[::-1])
-
 zpoints = np.array(csvDataMean[0][::-1])
-vpoints = np.array(popGen()[::-1])
 
-plt.plot(xpoints, ypoints)
 
-plt.plot(zpoints ,color="red")
+plt.plot(ypoints)
+plt.plot(zpoints,color="red")
+#plt.plot(zpoints ,color="red")
 plt.show()

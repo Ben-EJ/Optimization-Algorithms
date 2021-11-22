@@ -8,13 +8,13 @@
 
 
 using namespace std;
-const int N = 20;
-const int Pop = 50;
+const int N = 10;
+const int Pop = 100;
 
 const float MUTRATE = 0.04;
 const float MUTSTEP = 1.5;
 
-const int GEN = 1000;
+const int GEN = 350;
 
 typedef struct {
     float gene[N];
@@ -24,15 +24,15 @@ typedef struct {
 individual population[Pop];
 individual offspring[Pop];
 
-const float MIN = -100; // Use these everywhere 
-const float MAX = 100;
+const float MIN = -5.12; // Use these everywhere 
+const float MAX = 5.12;
 
 
 void fitnessFunc(individual& ind) {//New fitness function at the bottom of worksheet 3
-    float fitness = 10 * N;
+    float fitness = 0;
     for (int i = 0; i < N; i++) {
-        //fitness = fitness + ind.gene[i];
-        fitness = fitness + (ind.gene[i] * ind.gene[i]) - (10 * cos((2 * 3.14) * ind.gene[i]));
+        fitness = fitness + ind.gene[i];
+        //fitness = fitness + (ind.gene[i] * ind.gene[i]) - (10 * cos((2 * 3.14) * ind.gene[i]));
         
     }
     ind.fitness = fitness;
@@ -55,8 +55,8 @@ void fitnessFunc2(individual& ind) {
 
 void testFitness() {
     for (int i = 0; i < Pop; i++) {
-        fitnessFunc(population[i]);
-        //fitnessFunc2(population[i]);
+        //fitnessFunc(population[i]);
+        fitnessFunc2(population[i]);
     }
 }
 
