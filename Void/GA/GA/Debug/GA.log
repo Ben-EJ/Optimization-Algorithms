@@ -1,7 +1,0 @@
-﻿  GA.cpp
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GA\GA\GA.cpp(13,26): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GA\GA\GA.cpp(14,26): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GA\GA\GA.cpp(108,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GA\GA\GA.cpp(179,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
-C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GA\GA\GA.cpp(182,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  GA.vcxproj -> C:\Users\benja\Desktop\Year 3\Bio\Worksheet1Bio\GA\Debug\GA.exe
