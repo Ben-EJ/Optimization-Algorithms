@@ -4,13 +4,6 @@ import array
 import matplotlib.pyplot as plt
 import numpy as np
 import copy
-N = 20
-Pop = 100
-
-MUTRATE = 0.04
-MUTSTEP = 2.55
-
-GEN = 350
 
 class Individual:
     def __init__(self, gene,fitness):
@@ -28,9 +21,19 @@ class Individual:
         self.gene = geneSet
     def setFitness(self, fitnessSet):
         self.fitness = fitnessSet
-        
-MIN = -100
-MAX = 100
+
+N = 20
+Pop = 50
+
+MUTRATE = 0.04
+MUTSTEP = 2
+
+GEN = 250
+
+MIN = -32
+MAX = 32
+
+SELEFIT = 2
 
 def generatePopulationReals():
     population = []
@@ -43,16 +46,24 @@ def generatePopulationReals():
 
 def fitnessFunc(populationVar):
     for i in range(0, Pop):
+        fitness = 0
+        for x in range(0, N):
+            fitness = fitness + population[i].getGene()[x]
+
+        populationVar[i].setFitness(fitness)
+    return populationVar
+
+def fitnessFunc1(populationVar):
+    for i in range(0, Pop):
         fitness = 10 * N
         for x in range(0, N):
-            #fitness = fitness + population[i].getGene()[x]
+            
             fitness = fitness + (populationVar[i].getGene()[x] ** 2) - ( 10 * math.cos((2 * 3.14) * populationVar[i].getGene()[x]) )
 
         populationVar[i].setFitness(fitness)
     return populationVar
 
 def fitnessFunc2(population):
-    
     for x in range(0, Pop):
         fitness = 0
         for i in range(0, N - 1):
@@ -63,6 +74,31 @@ def fitnessFunc2(population):
             fitness = fitness + (100 * (step1 + step2))
         population[x].setFitness(fitness)
     return population
+
+def fitnessFunc3(population):
+    D = 20
+    for x in range(0, Pop):
+        fitness = 0
+        step1 = 0
+        for i in range(0, D):
+            step1 = step1 + (population[x].gene[i] ** 2)
+        step2 = 0
+        for i in range(0, D):
+            step2 = step2 + math.cos(2 * 3.14 * population[x].gene[i])
+        fitness = fitness + (-20 * ((-0.2 * step1) - step2))
+        population[x].setFitness(fitness)
+    return population
+
+def selectFitnessFunc(num, population):
+    if (num == 0):
+        return fitnessFunc(population)
+    elif (num == 1):
+        return fitnessFunc1(population)
+    elif (num == 2):
+        return fitnessFunc2(population)
+    else:
+        return fitnessFunc3(population)
+
 
 def populationFitnessTotal():
     totalFit = 0
@@ -123,14 +159,6 @@ def minFitness(population):
         if (population[x].getFitness() < minFitness):
             minFitness = population[x].getFitness()
     return minFitness
-def minFitnessSave():
-    minFitness = population[0].getFitness()
-    bestIndervidual = Individual([],0.0)
-    for x in range(1, Pop):
-        if (population[x].getFitness() < minFitness):
-            minFitness = population[x].getFitness()
-            bestIndervidual = population[x]
-    return bestIndervidual
 
 def meanFitness(population):
     meanFitnessAdd = 0
@@ -139,6 +167,24 @@ def meanFitness(population):
     
     meanFitnessDiv = meanFitnessAdd / Pop
     return meanFitnessDiv
+
+def minFitnessSave(population):
+    minFitness = population[0].getFitness()
+    bestIndervidual = 0
+    for x in range(1, Pop):
+        if (population[x].getFitness() < minFitness):
+            minFitness = population[x].getFitness()
+            bestIndervidual = x
+
+    worseFitness = population[0].getFitness()
+    worseIndervidual = 0
+    for x in range(1, Pop):
+        if (population[x].getFitness() > worseFitness):
+            worseFitness = population[x].getFitness()
+            worseIndervidual = x
+
+    population[worseIndervidual] = copy.deepcopy(population[bestIndervidual])
+    return population
 
 
 minEachGen = []
@@ -152,6 +198,7 @@ def printMainPop(population):
         
         print("Fitness")
         print(population[i].getFitness())
+
 def printMin():
     for i in range(0, len(minEachGen)):
         print(minEachGen[i])   
@@ -164,7 +211,7 @@ def main():
 
     population = generatePopulationReals()
 
-    populationFit = fitnessFunc2(population)
+    populationFit = selectFitnessFunc(SELEFIT, population)
     
     population = copy.deepcopy(populationFit)
 
@@ -180,16 +227,17 @@ def main():
         
         offspring = copy.deepcopy(offspringDone2)
         
-        
         population = copy.deepcopy(offspring)
 
-        populationFit = fitnessFunc2(population)
+        populationFit = selectFitnessFunc(SELEFIT,population)
         population = copy.deepcopy(populationFit)
-        
+
         minEachGen.append(minFitness(population))
         meanFitnessGen.append(meanFitness(population))
+
+        populationbestAdded = minFitnessSave(population)
+        population = copy.deepcopy(populationbestAdded)
         
-    
 main()
 printMin()    
 
@@ -197,10 +245,12 @@ plt.figure(figsize=(20,10))
 
 plt.xlabel("Generation", fontsize=15)
 plt.ylabel("Min fitness",  fontsize=15)
-
+plt.title("GA Graph")
 ypoints = np.array(minEachGen)
 zpoints = np.array(meanFitnessGen)
+plt.figtext(0.5, 0.01, "N: " + str(N) + " / " + "POP: " + str(Pop) + " / " + "MUTRATE: " + str(MUTRATE) + " / " + "MUTSTEP: " + str(MUTSTEP) + " / " + "GEN: " + str(GEN) + " ",horizontalalignment = "center",  fontsize=20, bbox={"facecolor":"white", "alpha":0.5, "pad":10, })
 
-plt.plot(ypoints)
-plt.plot(zpoints ,color="red")
+plt.plot(ypoints, label="Best")
+plt.plot(zpoints ,label="Mean", color="red")
+plt.legend(loc='best')
 plt.show()
