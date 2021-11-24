@@ -33,7 +33,7 @@ GEN = 250
 MIN = -32
 MAX = 32
 
-SELEFIT = 2
+SELEFIT = 3
 
 def generatePopulationReals():
     population = []
@@ -76,16 +76,14 @@ def fitnessFunc2(population):
     return population
 
 def fitnessFunc3(population):
-    D = 20
     for x in range(0, Pop):
         fitness = 0
         step1 = 0
-        for i in range(0, D):
-            step1 = step1 + (population[x].gene[i] ** 2)
         step2 = 0
-        for i in range(0, D):
+        for i in range(0,N):
+            step1 = step1 + population[x].gene[i] ** 2
             step2 = step2 + math.cos(2 * 3.14 * population[x].gene[i])
-        fitness = fitness + (-20 * ((-0.2 * step1) - step2))
+        fitness = fitness + (-20 * ( math.exp(-0.2 * math.sqrt(step1)) - math.exp(step2) ) )
         population[x].setFitness(fitness)
     return population
 
@@ -132,6 +130,22 @@ def crossoverOne(offspring):
         offspring[i] = copy.deepcopy(toff1) 
         offspring[i+1] = copy.deepcopy(toff2)
     return offspring    
+
+def uniformCrossover(offspring):
+    for i in range(0,len(offspring), 2):
+        temp = copy.deepcopy(offspring[i].getGene())
+        temp2 = copy.deepcopy(offspring[i + 1].getGene())
+        for j in range(0, N):
+            crossover = random.randint(0, 1)
+            #print(crossover)
+            if(crossover == 1):
+                temp3 = copy.deepcopy(temp[j])
+                temp[j] = copy.deepcopy(temp2[j])
+                temp2[j] = copy.deepcopy(temp3)
+        offspring[i].gene = copy.deepcopy(temp) 
+        offspring[i+1].gene = copy.deepcopy(temp2)
+    return offspring
+
 
 def mutationReals(offspring):
     
@@ -211,35 +225,25 @@ def main():
 
     population = generatePopulationReals()
 
-    populationFit = selectFitnessFunc(SELEFIT, population)
+    population = selectFitnessFunc(SELEFIT, population)
     
-    population = copy.deepcopy(populationFit)
-
     for i in range(0,GEN):
 
         offspring = selectionMin(population)
 
-        offspringDone1 = crossoverOne(offspring)
+        offspring = crossoverOne(offspring)
         
-        offspring = copy.deepcopy(offspringDone1)
-        
-        offspringDone2 = mutationReals(offspring)
-        
-        offspring = copy.deepcopy(offspringDone2)
-        
-        population = copy.deepcopy(offspring)
+        offspring = mutationReals(offspring)
 
-        populationFit = selectFitnessFunc(SELEFIT,population)
-        population = copy.deepcopy(populationFit)
+        offspring = selectFitnessFunc(SELEFIT, offspring)
+        
+        population = copy.deepcopy(selectionMin(offspring))
 
         minEachGen.append(minFitness(population))
         meanFitnessGen.append(meanFitness(population))
-
-        populationbestAdded = minFitnessSave(population)
-        population = copy.deepcopy(populationbestAdded)
         
 main()
-printMin()    
+#printMin()    
 
 plt.figure(figsize=(20,10))
 
