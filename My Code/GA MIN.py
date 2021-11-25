@@ -10,30 +10,31 @@ class Individual:
         self.gene = gene
         self.fitness = fitness
 
-    def getGene(self):
-        return self.gene
-    def getFitness(self):
-        return self.fitness
 
-    def setGeneNo(self, geneNo, geneSet):
-        self.gene[geneNo] = geneSet
-    def setGene(self, geneSet):
-        self.gene = geneSet
-    def setFitness(self, fitnessSet):
-        self.fitness = fitnessSet
+
+'''
+N = 20
+Pop = 50
+MUTRATE = 0.04
+MUTSTEP = 20
+GEN = 80
+MIN = -32
+MAX = 32
+SELEFIT = 3
+'''
 
 N = 20
 Pop = 50
 
 MUTRATE = 0.04
-MUTSTEP = 2
+MUTSTEP = 20
 
-GEN = 250
+GEN = 1000
 
-MIN = -32
-MAX = 32
+MIN = -100
+MAX = 100
 
-SELEFIT = 3
+SELEFIT = 2
 
 def generatePopulationReals():
     population = []
@@ -48,19 +49,17 @@ def fitnessFunc(populationVar):
     for i in range(0, Pop):
         fitness = 0
         for x in range(0, N):
-            fitness = fitness + population[i].getGene()[x]
+            fitness = fitness + population[i].gene[x]
 
-        populationVar[i].setFitness(fitness)
+        populationVar[i].fitness = fitness
     return populationVar
 
 def fitnessFunc1(populationVar):
     for i in range(0, Pop):
         fitness = 10 * N
         for x in range(0, N):
-            
-            fitness = fitness + (populationVar[i].getGene()[x] ** 2) - ( 10 * math.cos((2 * 3.14) * populationVar[i].getGene()[x]) )
-
-        populationVar[i].setFitness(fitness)
+            fitness = fitness + (populationVar[i].gene[x] ** 2) - ( 10 * math.cos((2 * 3.14) * populationVar[i].gene[x]) )
+        populationVar[i].fitness = fitness
     return populationVar
 
 def fitnessFunc2(population):
@@ -69,10 +68,11 @@ def fitnessFunc2(population):
         for i in range(0, N - 1):
             step1 = 0
             step2 = 0
-            step1 = ((population[x].gene[i + 1] - (population[x].gene[i] ** 2)) ** 2)
-            step2 = (1 - population[x].gene[i]) ** 2
+            step1 = ((population[x].gene[i + 1] - (population[x].gene[i] * population[x].gene[i])) * (population[x].gene[i + 1] - (population[x].gene[i] * population[x].gene[i])))
+            step2 = (1 - population[x].gene[i]) * (1 - population[x].gene[i])
             fitness = fitness + (100 * (step1 + step2))
-        population[x].setFitness(fitness)
+
+        population[x].fitness = fitness
     return population
 
 def fitnessFunc3(population):
@@ -81,10 +81,10 @@ def fitnessFunc3(population):
         step1 = 0
         step2 = 0
         for i in range(0,N):
-            step1 = step1 + population[x].gene[i] ** 2
-            step2 = step2 + math.cos(2 * 3.14 * population[x].gene[i])
-        fitness = fitness + (-20 * ( math.exp(-0.2 * math.sqrt(step1)) - math.exp(step2) ) )
-        population[x].setFitness(fitness)
+            step1 = step1 + (population[x].gene[i] ** 2) 
+            step2 = step2 + math.cos(2 * 3.14 * population[x].gene[i]) 
+        fitness = fitness + (-20 * ( math.exp(-0.2 * math.sqrt(step1 / N)) - math.exp(step2 / N) ) )
+        population[x].fitness = fitness
     return population
 
 def selectFitnessFunc(num, population):
@@ -101,7 +101,7 @@ def selectFitnessFunc(num, population):
 def populationFitnessTotal():
     totalFit = 0
     for i in range(0,Pop):
-        totalFit = totalFit + population[i].getFitness()
+        totalFit = totalFit + population[i].fitness
     return totalFit
 
 
@@ -112,7 +112,7 @@ def selectionMin(population):
     for i in range(0,Pop):
         parent1 = random.randint(0, Pop - 1)
         parent2 = random.randint(0, Pop - 1)
-        if (population[parent1].getFitness() < population[parent2].getFitness()):
+        if (population[parent1].fitness < population[parent2].fitness):
             offspring.append(population[parent1])
         else: 
             offspring.append(population[parent2])
@@ -131,74 +131,56 @@ def crossoverOne(offspring):
         offspring[i+1] = copy.deepcopy(toff2)
     return offspring    
 
-def uniformCrossover(offspring):
-    for i in range(0,len(offspring), 2):
-        temp = copy.deepcopy(offspring[i].getGene())
-        temp2 = copy.deepcopy(offspring[i + 1].getGene())
-        for j in range(0, N):
-            crossover = random.randint(0, 1)
-            #print(crossover)
-            if(crossover == 1):
-                temp3 = copy.deepcopy(temp[j])
-                temp[j] = copy.deepcopy(temp2[j])
-                temp2[j] = copy.deepcopy(temp3)
-        offspring[i].gene = copy.deepcopy(temp) 
-        offspring[i+1].gene = copy.deepcopy(temp2)
-    return offspring
-
-
 def mutationReals(offspring):
-    
     for i in range(0, Pop):
         for j in range(0, N): 
             MUTPROB = random.uniform(0.0, 1.0)
             if (MUTPROB < MUTRATE):
-                alter = random.uniform(0, MUTSTEP)
-                coinFlip = random.randint(0,2)
+                alter = random.uniform(0.0, MUTSTEP)
+                coinFlip = random.randint(0,1)
                 if (coinFlip == 1):
-                    aGene1 = offspring[i].getGene()[j] + alter
-                    offspring[i].setGeneNo(j, aGene1)
-                    if (offspring[i].getGene()[j] > MAX):
-                         offspring[i].setGeneNo(j,MAX)     
+                    offspring[i].gene[j] = offspring[i].gene[j] + alter
+                    if (offspring[i].gene[j] > MAX):
+                         offspring[i].gene[j] = MAX    
                 else:
-                    aGene2 = offspring[i].getGene()[j] - alter
-                    offspring[i].setGeneNo(j, aGene2)
-                    if (offspring[i].getGene()[j] < MIN):
-                         offspring[i].setGeneNo(j,MIN)        
+                    offspring[i].gene[j] = offspring[i].gene[j] - alter
+                    if (offspring[i].gene[j] < MIN):
+                         offspring[i].gene[j] = MIN        
     return offspring
 
 def minFitness(population):
-    minFitness = population[0].getFitness()
-    for x in range(1, Pop):
-        if (population[x].getFitness() < minFitness):
-            minFitness = population[x].getFitness()
+    minFitness = population[0].fitness
+    for x in range(0, Pop):
+        if (population[x].fitness < minFitness):
+            minFitness = population[x].fitness
     return minFitness
 
 def meanFitness(population):
     meanFitnessAdd = 0
     for x in range(0, Pop):
-        meanFitnessAdd = meanFitnessAdd + population[x].getFitness()
+        meanFitnessAdd = meanFitnessAdd + population[x].fitness
     
     meanFitnessDiv = meanFitnessAdd / Pop
     return meanFitnessDiv
 
-def minFitnessSave(population):
-    minFitness = population[0].getFitness()
+def minFitnessSave(population, offspring):
+    minFitness = population[0].fitness
     bestIndervidual = 0
     for x in range(1, Pop):
-        if (population[x].getFitness() < minFitness):
-            minFitness = population[x].getFitness()
+        if (population[x].fitness < minFitness):
+            minFitness = population[x].fitness
             bestIndervidual = x
 
-    worseFitness = population[0].getFitness()
+    worseFitness = population[0].fitness
     worseIndervidual = 0
+    
     for x in range(1, Pop):
-        if (population[x].getFitness() > worseFitness):
-            worseFitness = population[x].getFitness()
+        if (offspring[x].fitness > worseFitness):
+            worseFitness = offspring[x].fitness
             worseIndervidual = x
 
-    population[worseIndervidual] = copy.deepcopy(population[bestIndervidual])
-    return population
+    offspring[worseIndervidual] = copy.deepcopy(population[bestIndervidual])
+    return offspring
 
 
 minEachGen = []
@@ -208,15 +190,17 @@ def printMainPop(population):
     for i in range(0, Pop):
         print("Gene ")
         for x in range(0, N):
-            print(population[i].getGene()[x])
+            print(population[i].gene[x])
         
         print("Fitness")
-        print(population[i].getFitness())
+        print(population[i].fitness)
 
 def printMin():
     for i in range(0, len(minEachGen)):
         print(minEachGen[i])   
-
+def printMean():
+    for i in range(0, len(meanFitnessGen)):
+        print(meanFitnessGen[i]) 
 def main():
     global population
     global offspring
@@ -236,15 +220,17 @@ def main():
         offspring = mutationReals(offspring)
 
         offspring = selectFitnessFunc(SELEFIT, offspring)
-        
-        population = copy.deepcopy(selectionMin(offspring))
 
         minEachGen.append(minFitness(population))
         meanFitnessGen.append(meanFitness(population))
-        
-main()
-#printMin()    
 
+        population = minFitnessSave(population,offspring)
+
+        
+main()   
+printMin()
+print(" ")
+#printMean()
 plt.figure(figsize=(20,10))
 
 plt.xlabel("Generation", fontsize=15)
