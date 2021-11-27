@@ -10,8 +10,24 @@ class Individual:
         self.gene = gene
         self.fitness = fitness
 
+class GenerationData:
+    def __init__(self, best, mean, MUTRATE):
+        self.best = best
+        self.mean = mean
+        self.MUTRATE = MUTRATE
 
-
+class TestParameters:
+    def __init__(self,testNum, N, Pop, MUTRATE, MUTSTEP, GEN, MIN, MAX, SELEFIT):
+        self.testNum = testNum
+        self.N = N
+        self.Pop = Pop
+        self.MUTRATE = MUTRATE   
+        self.MUTSTEP = MUTSTEP
+        self.GEN = GEN
+        self.MIN = MIN
+        self.MAX = MAX
+        self.SELEFIT = SELEFIT
+        
 '''
 N = 20
 Pop = 50
@@ -23,20 +39,7 @@ MAX = 32
 SELEFIT = 3
 '''
 
-N = 20
-Pop = 50
-
-MUTRATE = 0.04
-MUTSTEP = 20
-
-GEN = 1000
-
-MIN = -100
-MAX = 100
-
-SELEFIT = 2
-
-def generatePopulationReals():
+def generatePopulationReals(Pop,N,MIN,MAX):
     population = []
     for i in range(0, Pop):
         gene = []
@@ -45,16 +48,16 @@ def generatePopulationReals():
         population.append(Individual(gene, 0.0))
     return population
 
-def fitnessFunc(populationVar):
+def fitnessFunc(population,Pop,N):
     for i in range(0, Pop):
         fitness = 0
         for x in range(0, N):
             fitness = fitness + population[i].gene[x]
 
-        populationVar[i].fitness = fitness
-    return populationVar
+        population[i].fitness = fitness
+    return population
 
-def fitnessFunc1(populationVar):
+def fitnessFunc1(populationVar,Pop,N):
     for i in range(0, Pop):
         fitness = 10 * N
         for x in range(0, N):
@@ -62,7 +65,7 @@ def fitnessFunc1(populationVar):
         populationVar[i].fitness = fitness
     return populationVar
 
-def fitnessFunc2(population):
+def fitnessFunc2(population,Pop,N):
     for x in range(0, Pop):
         fitness = 0
         for i in range(0, N - 1):
@@ -70,12 +73,12 @@ def fitnessFunc2(population):
             step2 = 0
             step1 = ((population[x].gene[i + 1] - (population[x].gene[i] * population[x].gene[i])) * (population[x].gene[i + 1] - (population[x].gene[i] * population[x].gene[i])))
             step2 = (1 - population[x].gene[i]) * (1 - population[x].gene[i])
-            fitness = fitness + (100 * (step1 + step2))
+            fitness = fitness + ((100 * step1) + step2)
 
         population[x].fitness = fitness
     return population
 
-def fitnessFunc3(population):
+def fitnessFunc3(population,Pop,N):
     for x in range(0, Pop):
         fitness = 0
         step1 = 0
@@ -87,25 +90,17 @@ def fitnessFunc3(population):
         population[x].fitness = fitness
     return population
 
-def selectFitnessFunc(num, population):
+def selectFitnessFunc(num, population,Pop,N):
     if (num == 0):
-        return fitnessFunc(population)
+        return fitnessFunc(population,Pop,N)
     elif (num == 1):
-        return fitnessFunc1(population)
+        return fitnessFunc1(population,Pop,N)
     elif (num == 2):
-        return fitnessFunc2(population)
+        return fitnessFunc2(population,Pop,N)
     else:
-        return fitnessFunc3(population)
+        return fitnessFunc3(population,Pop,N)
 
-
-def populationFitnessTotal():
-    totalFit = 0
-    for i in range(0,Pop):
-        totalFit = totalFit + population[i].fitness
-    return totalFit
-
-
-def selectionMin(population):
+def selectionMin(population,Pop):
     parent1 = 0
     parent2 = 0
     offspring = []  
@@ -118,7 +113,7 @@ def selectionMin(population):
             offspring.append(population[parent2])
     return offspring
 
-def crossoverOne(offspring): 
+def crossoverOne(offspring,Pop,N): 
     for i in range( 0, Pop, 2 ): 
         toff1 = copy.deepcopy(offspring[i]) 
         toff2 = copy.deepcopy(offspring[i+1]) 
@@ -131,7 +126,7 @@ def crossoverOne(offspring):
         offspring[i+1] = copy.deepcopy(toff2)
     return offspring    
 
-def mutationReals(offspring):
+def mutationReals(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN):
     for i in range(0, Pop):
         for j in range(0, N): 
             MUTPROB = random.uniform(0.0, 1.0)
@@ -147,15 +142,16 @@ def mutationReals(offspring):
                     if (offspring[i].gene[j] < MIN):
                          offspring[i].gene[j] = MIN        
     return offspring
+ 
 
-def minFitness(population):
+def minFitness(population,Pop):
     minFitness = population[0].fitness
     for x in range(0, Pop):
         if (population[x].fitness < minFitness):
             minFitness = population[x].fitness
     return minFitness
 
-def meanFitness(population):
+def meanFitness(population,Pop):
     meanFitnessAdd = 0
     for x in range(0, Pop):
         meanFitnessAdd = meanFitnessAdd + population[x].fitness
@@ -163,7 +159,7 @@ def meanFitness(population):
     meanFitnessDiv = meanFitnessAdd / Pop
     return meanFitnessDiv
 
-def minFitnessSave(population, offspring):
+def minFitnessSave(population, offspring,Pop):
     minFitness = population[0].fitness
     bestIndervidual = 0
     for x in range(1, Pop):
@@ -182,11 +178,7 @@ def minFitnessSave(population, offspring):
     offspring[worseIndervidual] = copy.deepcopy(population[bestIndervidual])
     return offspring
 
-
-minEachGen = []
-meanFitnessGen = []
-
-def printMainPop(population): 
+def printMainPop(population,Pop,N): 
     for i in range(0, Pop):
         print("Gene ")
         for x in range(0, N):
@@ -195,52 +187,109 @@ def printMainPop(population):
         print("Fitness")
         print(population[i].fitness)
 
-def printMin():
+def printMin(minEachGen):
     for i in range(0, len(minEachGen)):
         print(minEachGen[i])   
-def printMean():
+def printMean(meanFitnessGen):
     for i in range(0, len(meanFitnessGen)):
         print(meanFitnessGen[i]) 
-def main():
-    global population
-    global offspring
+
+"""
+Gousian mutation algorithm try it - Larry suggestion
+"""
+
+def GA(N,Pop,MUTRATE, MUTSTEP, GEN, MIN,MAX,SELEFIT):
     population = []
     offspring = []
 
-    population = generatePopulationReals()
+    minEachGen = []
+    meanFitnessGen = []
+    population = generatePopulationReals(Pop,N,MIN,MAX)
 
-    population = selectFitnessFunc(SELEFIT, population)
+    population = selectFitnessFunc(SELEFIT, population,Pop,N)
     
     for i in range(0,GEN):
 
-        offspring = selectionMin(population)
+        offspring = selectionMin(population,Pop)
 
-        offspring = crossoverOne(offspring)
+        offspring = crossoverOne(offspring,Pop,N)
         
-        offspring = mutationReals(offspring)
+        offspring = mutationReals(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN)
 
-        offspring = selectFitnessFunc(SELEFIT, offspring)
+        offspring = selectFitnessFunc(SELEFIT, offspring,Pop,N)
+        
+        population = minFitnessSave(population,offspring,Pop)
 
-        minEachGen.append(minFitness(population))
-        meanFitnessGen.append(meanFitness(population))
+        minEachGen.append(minFitness(population,Pop))
+        meanFitnessGen.append(meanFitness(population,Pop))
 
-        population = minFitnessSave(population,offspring)
+    return GenerationData(minEachGen, meanFitnessGen,MUTRATE)
+def plotGraph2D(testPara, genData):
+    plt.figure(figsize=(20,10))
+    plt.xlabel("Generation", fontsize=15)
+    plt.ylabel("Min fitness",  fontsize=15)
+    plt.title("GA Graph")
 
+    for x in range(0, len(testPara)):
+        ypoints = np.array(genData[x].best)
+        zpoints = np.array(genData[x].mean)
+        plt.plot(ypoints, label="Best" + " " + str(genData[x].MUTRATE))
+        plt.plot(zpoints ,label="Mean" + " " + str(genData[x].MUTRATE))
+
+    plt.legend(loc='best')
+    plt.show()
+
+def plotGraph2D(testPara, genData):
+    plt.figure(figsize=(20,10))
+    plt.xlabel("Generation", fontsize=15)
+    plt.ylabel("Min fitness",  fontsize=15)
+    plt.title("GA Graph")
+
+    for x in range(0, len(testPara)):
+        ypoints = np.array(genData[x].best)
+        zpoints = np.array(genData[x].mean)
+        plt.plot(ypoints, label="Best" + " " + str(genData[x].MUTRATE))
+        plt.plot(zpoints ,label="Mean" + " " + str(genData[x].MUTRATE))
+
+    plt.legend(loc='best')
+    plt.show()
+def plotGraph3D():
+    fig = plt.figure()
+    ax = plt.axes(projection='3d')
+    ax.contour3D(X, Y, Z, 50, cmap='binary')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_zlabel('z')
+
+def lowestInEachTest(genData):
+    for i in range(0,len(genData)):
+        minFitness = genData[i].best[0]
+        for x in range(0,len(genData[i].best)):
+            if (genData[i].best[x] < minFitness):
+                minFitness = genData[i].best[x]
+        print(minFitness)
+
+def main():  
+
+    MIN = -100
+    MAX = 100
+    SELEFIT = 2
+
+    genData = []
+    testPara = []
+    GEN = 500
+    testPara.append(TestParameters(1,20,50,0.01,50,GEN,MIN,MAX,SELEFIT))
+    testPara.append(TestParameters(2,20,50,0.01,55,GEN,MIN,MAX,SELEFIT))
+    testPara.append(TestParameters(3,20,50,0.01,60,GEN,MIN,MAX,SELEFIT))
+    testPara.append(TestParameters(4,20,50,0.01,65,GEN,MIN,MAX,SELEFIT))
+
+    for i in range(0,len(testPara)):
+        genData.append(GA(testPara[i].N,testPara[i].Pop,testPara[i].MUTRATE,testPara[i].MUTSTEP,testPara[i].GEN,testPara[i].MIN,testPara[i].MAX,testPara[i].SELEFIT))
+    
+    plotGraph2D(testPara,genData) 
+    lowestInEachTest(genData)
         
 main()   
-printMin()
+
 print(" ")
 #printMean()
-plt.figure(figsize=(20,10))
-
-plt.xlabel("Generation", fontsize=15)
-plt.ylabel("Min fitness",  fontsize=15)
-plt.title("GA Graph")
-ypoints = np.array(minEachGen)
-zpoints = np.array(meanFitnessGen)
-plt.figtext(0.5, 0.01, "N: " + str(N) + " / " + "POP: " + str(Pop) + " / " + "MUTRATE: " + str(MUTRATE) + " / " + "MUTSTEP: " + str(MUTSTEP) + " / " + "GEN: " + str(GEN) + " ",horizontalalignment = "center",  fontsize=20, bbox={"facecolor":"white", "alpha":0.5, "pad":10, })
-
-plt.plot(ypoints, label="Best")
-plt.plot(zpoints ,label="Mean", color="red")
-plt.legend(loc='best')
-plt.show()
