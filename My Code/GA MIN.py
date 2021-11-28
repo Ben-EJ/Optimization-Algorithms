@@ -17,7 +17,7 @@ class GenerationData:
         self.MUTRATE = MUTRATE
 
 class TestParameters:
-    def __init__(self,testNum, N, Pop, MUTRATE, MUTSTEP, GEN, MIN, MAX, SELEFIT):
+    def __init__(self,testNum, N, Pop, MUTRATE, MUTSTEP, GEN, MIN, MAX,SELECROSS,SELESELECT, SELEFIT):
         self.testNum = testNum
         self.N = N
         self.Pop = Pop
@@ -26,19 +26,10 @@ class TestParameters:
         self.GEN = GEN
         self.MIN = MIN
         self.MAX = MAX
+        self.SELECROSS = SELECROSS
+        self.SELESELECT = SELESELECT
         self.SELEFIT = SELEFIT
         
-'''
-N = 20
-Pop = 50
-MUTRATE = 0.04
-MUTSTEP = 20
-GEN = 80
-MIN = -32
-MAX = 32
-SELEFIT = 3
-'''
-
 def generatePopulationReals(Pop,N,MIN,MAX):
     population = []
     for i in range(0, Pop):
@@ -100,7 +91,7 @@ def selectFitnessFunc(num, population,Pop,N):
     else:
         return fitnessFunc3(population,Pop,N)
 
-def selectionMin(population,Pop):
+def selectionTour(population,Pop):
     parent1 = 0
     parent2 = 0
     offspring = []  
@@ -112,6 +103,31 @@ def selectionMin(population,Pop):
         else: 
             offspring.append(population[parent2])
     return offspring
+
+def popFitTotal(population,Pop):
+    totalFit = 0
+    for i in range(0, Pop):
+        totalFit = totalFit + (1.0 - population[i].fitness)
+    return totalFit
+
+def rouletteWheel(population,Pop):
+    offspring = []
+    population_fitness_total = popFitTotal(population,Pop)
+    for i in range(0, Pop): 
+        selection_point = random.uniform(0, population_fitness_total)
+        running_total  = 0 
+        j = 0
+        while ( running_total <= selection_point ):
+            running_total += population[j].fitness
+            j = j + 1 
+        offspring.append(population[j-1])
+    return offspring
+
+def selection(population,Pop, SELESELECT):
+    if(SELESELECT == 0):
+        return selectionTour(population, Pop)
+    elif(SELESELECT == 1):
+        return rouletteWheel(population, Pop)
 
 def crossoverOne(offspring,Pop,N): 
     for i in range( 0, Pop, 2 ): 
@@ -125,6 +141,33 @@ def crossoverOne(offspring,Pop,N):
         offspring[i] = copy.deepcopy(toff1) 
         offspring[i+1] = copy.deepcopy(toff2)
     return offspring    
+
+def twoPointCrossover(offspring,Pop,N):
+    for i in range(0,Pop,2):
+        offs1 = copy.deepcopy(offspring[i])
+        offs2 = copy.deepcopy(offspring[i + 1])
+        temp = copy.deepcopy(offspring[i])
+
+        crossover1 = random.randint(1,N / 2)
+        crossover2 = random.randint(crossover1, N)
+
+        for j in range(crossover1, crossover2):
+            offs1.gene[j] = copy.deepcopy(offs2.gene[j])
+            offs2.gene[j] = copy.deepcopy(temp.gene[j])
+
+        offspring[i] = copy.deepcopy(offs1)
+        offspring[i + 1] = copy.deepcopy(offs2)
+    return offspring
+
+
+
+def crossover(offspring,Pop,N, SELECROSS):
+    if (SELECROSS == 0):
+        return crossoverOne(offspring,Pop,N)
+    elif (SELECROSS == 1):
+        return twoPointCrossover(offspring,Pop,N)
+
+
 
 def mutationReals(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN):
     for i in range(0, Pop):
@@ -142,8 +185,7 @@ def mutationReals(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN):
                     if (offspring[i].gene[j] < MIN):
                          offspring[i].gene[j] = MIN        
     return offspring
- 
-
+    
 def minFitness(population,Pop):
     minFitness = population[0].fitness
     for x in range(0, Pop):
@@ -196,9 +238,10 @@ def printMean(meanFitnessGen):
 
 """
 Gousian mutation algorithm try it - Larry suggestion
+https://ieeexplore-ieee-org.ezproxy.uwe.ac.uk/stamp/stamp.jsp?tp=&arnumber=489178
 """
 
-def GA(N,Pop,MUTRATE, MUTSTEP, GEN, MIN,MAX,SELEFIT):
+def GA(N,Pop,MUTRATE, MUTSTEP, GEN, MIN,MAX,SELECROSS,SELESelect,SELEFIT):
     population = []
     offspring = []
 
@@ -210,9 +253,9 @@ def GA(N,Pop,MUTRATE, MUTSTEP, GEN, MIN,MAX,SELEFIT):
     
     for i in range(0,GEN):
 
-        offspring = selectionMin(population,Pop)
+        offspring = selection(population,Pop,SELESelect)
 
-        offspring = crossoverOne(offspring,Pop,N)
+        offspring = crossover(offspring,Pop,N,SELECROSS)
         
         offspring = mutationReals(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN)
 
@@ -224,20 +267,6 @@ def GA(N,Pop,MUTRATE, MUTSTEP, GEN, MIN,MAX,SELEFIT):
         meanFitnessGen.append(meanFitness(population,Pop))
 
     return GenerationData(minEachGen, meanFitnessGen,MUTRATE)
-def plotGraph2D(testPara, genData):
-    plt.figure(figsize=(20,10))
-    plt.xlabel("Generation", fontsize=15)
-    plt.ylabel("Min fitness",  fontsize=15)
-    plt.title("GA Graph")
-
-    for x in range(0, len(testPara)):
-        ypoints = np.array(genData[x].best)
-        zpoints = np.array(genData[x].mean)
-        plt.plot(ypoints, label="Best" + " " + str(genData[x].MUTRATE))
-        plt.plot(zpoints ,label="Mean" + " " + str(genData[x].MUTRATE))
-
-    plt.legend(loc='best')
-    plt.show()
 
 def plotGraph2D(testPara, genData):
     plt.figure(figsize=(20,10))
@@ -253,8 +282,24 @@ def plotGraph2D(testPara, genData):
 
     plt.legend(loc='best')
     plt.show()
+
+def plotGraph2D(testPara, genData):
+    plt.figure(figsize=(20,10))
+    plt.xlabel("Generation", fontsize=15)
+    plt.ylabel("Min fitness",  fontsize=15)
+    plt.title("GA Graph")
+
+    for x in range(0, len(testPara)):
+        ypoints = np.array(genData[x].best)
+        zpoints = np.array(genData[x].mean)
+        plt.plot(ypoints, label="Best" + " " + str(genData[x].MUTRATE))
+        plt.plot(zpoints ,label="Mean" + " " + str(genData[x].MUTRATE))
+
+    plt.legend(loc='best')
+    plt.show()
+
 def plotGraph3D():
-    fig = plt.figure()
+    plt.figure()
     ax = plt.axes(projection='3d')
     ax.contour3D(X, Y, Z, 50, cmap='binary')
     ax.set_xlabel('x')
@@ -269,26 +314,49 @@ def lowestInEachTest(genData):
                 minFitness = genData[i].best[x]
         print(minFitness)
 
+"""
+================================
+SELECROSS:(Select Crossover)
+One Point Crossover: 0 
+two Point Crossover: 1
+================================
+SELESELECT: (Select Selection)
+Tournement Selection: 0
+Roulette Wheel Selection: 1
+================================
+SELEFIT: (Select Fitness)
+Adding Up Fitness: 0
+Rastrigin function: 1
+Rosenbrock function: 2
+Ackley function: 3
+================================
+"""
 def main():  
-
+    GEN = 1000
     MIN = -100
     MAX = 100
-    SELEFIT = 2
 
+    SELECROSS = 0
+    SELESELECT = 0
+    SELEFIT = 2
+    
     genData = []
     testPara = []
-    GEN = 500
-    testPara.append(TestParameters(1,20,50,0.01,50,GEN,MIN,MAX,SELEFIT))
-    testPara.append(TestParameters(2,20,50,0.01,55,GEN,MIN,MAX,SELEFIT))
-    testPara.append(TestParameters(3,20,50,0.01,60,GEN,MIN,MAX,SELEFIT))
-    testPara.append(TestParameters(4,20,50,0.01,65,GEN,MIN,MAX,SELEFIT))
+    
+    testPara.append(TestParameters(1,20,50,0.04,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(1,20,50,0.05,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(1,20,50,0.06,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(1,20,50,0.07,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    #testPara.append(TestParameters(2,20,50,0.01,55,GEN,MIN,MAX,SELEFIT))
+    #testPara.append(TestParameters(3,20,50,0.01,60,GEN,MIN,MAX,SELEFIT))
+    #testPara.append(TestParameters(4,20,50,0.01,65,GEN,MIN,MAX,SELEFIT))
 
     for i in range(0,len(testPara)):
-        genData.append(GA(testPara[i].N,testPara[i].Pop,testPara[i].MUTRATE,testPara[i].MUTSTEP,testPara[i].GEN,testPara[i].MIN,testPara[i].MAX,testPara[i].SELEFIT))
+        genData.append(GA(testPara[i].N,testPara[i].Pop,testPara[i].MUTRATE,testPara[i].MUTSTEP,testPara[i].GEN,testPara[i].MIN,testPara[i].MAX,testPara[i].SELECROSS, testPara[i].SELESELECT,testPara[i].SELEFIT))
     
     plotGraph2D(testPara,genData) 
     lowestInEachTest(genData)
-        
+    
 main()   
 
 print(" ")
