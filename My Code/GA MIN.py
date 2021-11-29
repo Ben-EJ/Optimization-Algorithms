@@ -239,6 +239,7 @@ def printMean(meanFitnessGen):
 """
 Gousian mutation algorithm try it - Larry suggestion
 https://ieeexplore-ieee-org.ezproxy.uwe.ac.uk/stamp/stamp.jsp?tp=&arnumber=489178
+random.gauss(0, 0.5)
 """
 
 def GA(N,Pop,MUTRATE, MUTSTEP, GEN, MIN,MAX,SELECROSS,SELESelect,SELEFIT):
@@ -343,6 +344,9 @@ def main():
     genData = []
     testPara = []
     
+    #do each one of these 5 times and average the results on a graph
+    #look at graph tell what that mean in terms of search proccess
+    #For research - compare an evolutionary algorithm with another algorithm 
     testPara.append(TestParameters(1,20,50,0.04,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
     testPara.append(TestParameters(1,20,50,0.05,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
     testPara.append(TestParameters(1,20,50,0.06,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
