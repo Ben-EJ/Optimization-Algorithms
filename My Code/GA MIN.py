@@ -299,14 +299,6 @@ def plotGraph2D(testPara, genData):
     plt.legend(loc='best')
     plt.show()
 
-def plotGraph3D():
-    plt.figure()
-    ax = plt.axes(projection='3d')
-    ax.contour3D(X, Y, Z, 50, cmap='binary')
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-    ax.set_zlabel('z')
-
 def lowestInEachTest(genData):
     for i in range(0,len(genData)):
         minFitness = genData[i].best[0]
@@ -314,7 +306,10 @@ def lowestInEachTest(genData):
             if (genData[i].best[x] < minFitness):
                 minFitness = genData[i].best[x]
         print(minFitness)
+"""
+    
 
+"""
 """
 ================================
 SELECROSS:(Select Crossover)
@@ -332,36 +327,80 @@ Rosenbrock function: 2
 Ackley function: 3
 ================================
 """
-def main():  
-    GEN = 1000
-    MIN = -100
-    MAX = 100
+def averageOverTests(testNo,test):
+    allgen = []
+    meanFitnessAdd = 0
+    
 
-    SELECROSS = 0
-    SELESELECT = 0
-    SELEFIT = 2
+    for z in range(0, len(test)):
+        
+        allgen = allgen + test[z].best
+
+    for x in range(0, len(allgen)):
+        meanFitnessAdd = meanFitnessAdd + allgen[x]
+    meanFitnessDiv = meanFitnessAdd / len(allgen)
+    return meanFitnessDiv
+
+def testAverage(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT):  
     
     genData = []
     testPara = []
-    
-    #do each one of these 5 times and average the results on a graph
-    #look at graph tell what that mean in terms of search proccess
-    #For research - compare an evolutionary algorithm with another algorithm 
-    testPara.append(TestParameters(1,20,50,0.04,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
-    testPara.append(TestParameters(1,20,50,0.05,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
-    testPara.append(TestParameters(1,20,50,0.06,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
-    testPara.append(TestParameters(1,20,50,0.07,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
-    #testPara.append(TestParameters(2,20,50,0.01,55,GEN,MIN,MAX,SELEFIT))
-    #testPara.append(TestParameters(3,20,50,0.01,60,GEN,MIN,MAX,SELEFIT))
-    #testPara.append(TestParameters(4,20,50,0.01,65,GEN,MIN,MAX,SELEFIT))
 
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    
     for i in range(0,len(testPara)):
         genData.append(GA(testPara[i].N,testPara[i].Pop,testPara[i].MUTRATE,testPara[i].MUTSTEP,testPara[i].GEN,testPara[i].MIN,testPara[i].MAX,testPara[i].SELECROSS, testPara[i].SELESELECT,testPara[i].SELEFIT))
     
-    plotGraph2D(testPara,genData) 
-    lowestInEachTest(genData)
+    return averageOverTests(testNum,genData)
     
-main()   
+def testIndiv(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT):
+    genData = []
+    testPara = []
 
-print(" ")
-#printMean()
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    
+    for i in range(0,len(testPara)):
+        genData.append(GA(testPara[i].N,testPara[i].Pop,testPara[i].MUTRATE,testPara[i].MUTSTEP,testPara[i].GEN,testPara[i].MIN,testPara[i].MAX,testPara[i].SELECROSS, testPara[i].SELESELECT,testPara[i].SELEFIT))
+    
+    plotGraph2D(testPara,genData)
+    lowestInEachTest(genData)
+    #print(genData[0].best)
+
+   
+
+def mainAverageTests():
+    GEN = 1000
+    MUTSTEP = 10
+    SELECROSS = 0
+    SELESELECT = 0
+    SELEFIT = 3
+    MIN = -32
+    MAX = 32
+
+    print(testAverage(1,20,50,0.009,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    print(testAverage(1,20,50,0.01,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    print(testAverage(1,20,50,0.02,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    print(testAverage(1,20,50,0.03,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    print(testAverage(1,20,50,0.04,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    print(testAverage(1,20,50,0.05,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    print(testAverage(1,20,50,0.06,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    print(testAverage(1,20,50,0.07,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+
+def mainIndivTests():
+    GEN = 1000
+    SELECROSS = 0
+    SELESELECT = 0
+    SELEFIT = 2
+    MIN = -100
+    MAX = 100
+
+    testIndiv(1,20,50,0.07,50,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
+    testIndiv(1,20,50,0.01,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
+
+#mainAverageTests()
+mainIndivTests()
+
