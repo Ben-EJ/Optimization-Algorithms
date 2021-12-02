@@ -1,1 +1,0 @@
-Install-Package vcpkg.C.Users.benja.Desktop.vcpkgmaster -Source "C:\Users\benja\Desktop\vcpkg-master\scripts\buildsystems"

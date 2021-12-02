@@ -350,7 +350,13 @@ def testAverage(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,S
     testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
     testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
     testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
-    
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+
     for i in range(0,len(testPara)):
         genData.append(GA(testPara[i].N,testPara[i].Pop,testPara[i].MUTRATE,testPara[i].MUTSTEP,testPara[i].GEN,testPara[i].MIN,testPara[i].MAX,testPara[i].SELECROSS, testPara[i].SELESELECT,testPara[i].SELEFIT))
     
@@ -374,21 +380,21 @@ def testIndiv(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SEL
 
 def mainAverageTests():
     GEN = 1000
-    MUTSTEP = 10
+    MUTSTEP = 20
     SELECROSS = 0
     SELESELECT = 0
-    SELEFIT = 3
-    MIN = -32
-    MAX = 32
-
-    print(testAverage(1,20,50,0.009,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
-    print(testAverage(1,20,50,0.01,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
-    print(testAverage(1,20,50,0.02,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
-    print(testAverage(1,20,50,0.03,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
-    print(testAverage(1,20,50,0.04,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
-    print(testAverage(1,20,50,0.05,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
-    print(testAverage(1,20,50,0.06,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
-    print(testAverage(1,20,50,0.07,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    SELEFIT = 2
+    MIN = -100
+    MAX = 100
+    
+    Pop = 100
+    
+    print(testAverage(1,20,Pop,0.009,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    print(testAverage(1,20,Pop,0.01,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    print(testAverage(1,20,Pop,0.02,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    print(testAverage(1,20,Pop,0.03,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    print(testAverage(1,20,Pop,0.04,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    print(testAverage(1,20,Pop,0.05,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
 
 def mainIndivTests():
     GEN = 1000
@@ -401,6 +407,6 @@ def mainIndivTests():
     testIndiv(1,20,50,0.07,50,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
     testIndiv(1,20,50,0.01,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
 
-#mainAverageTests()
-mainIndivTests()
+mainAverageTests()
+#mainIndivTests()
 
