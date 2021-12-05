@@ -11,11 +11,12 @@ class Individual:
         self.fitness = fitness
 
 class GenerationData:
-    def __init__(self, best, mean, MUTRATE):
+    def __init__(self, best, mean, bestSolutions, MUTRATE):
         self.best = best
         self.mean = mean
+        self.bestSolutions = bestSolutions
         self.MUTRATE = MUTRATE
-
+        
 class TestParameters:
     def __init__(self,testNum, N, Pop, MUTRATE, MUTSTEP, GEN, MIN, MAX,SELECROSS,SELESELECT, SELEFIT):
         self.testNum = testNum
@@ -185,13 +186,33 @@ def mutationReals(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN):
                     if (offspring[i].gene[j] < MIN):
                          offspring[i].gene[j] = MIN        
     return offspring
-    
+
+def mutationGauss(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN): 
+    for i in range(0, Pop):
+        for j in range(0, N): 
+            MUTPROB = random.uniform(0.0, 1.0)
+            if (MUTPROB < MUTRATE):
+                gaussian = random.gauss(0,0.0001)
+                offspring[i].gene[j] = offspring[i].gene[j] * gaussian
+                if (offspring[i].gene[j] > MAX):
+                    offspring[i].gene[j] = MAX     
+    return offspring
+
 def minFitness(population,Pop):
     minFitness = population[0].fitness
     for x in range(0, Pop):
         if (population[x].fitness < minFitness):
             minFitness = population[x].fitness
     return minFitness
+
+def bestSolutionOfGen(population,Pop):
+    minFitness = population[0].fitness
+    bestSolutionNo = []
+    for x in range(0, Pop):
+        if (population[x].fitness < minFitness):
+            minFitness = population[x].fitness
+            bestSolutionNo = copy.deepcopy(population[x].gene)
+    return bestSolutionNo        
 
 def meanFitness(population,Pop):
     meanFitnessAdd = 0
@@ -248,6 +269,7 @@ def GA(N,Pop,MUTRATE, MUTSTEP, GEN, MIN,MAX,SELECROSS,SELESelect,SELEFIT):
 
     minEachGen = []
     meanFitnessGen = []
+    theBestSolutions = []
     population = generatePopulationReals(Pop,N,MIN,MAX)
 
     population = selectFitnessFunc(SELEFIT, population,Pop,N)
@@ -258,16 +280,17 @@ def GA(N,Pop,MUTRATE, MUTSTEP, GEN, MIN,MAX,SELECROSS,SELESelect,SELEFIT):
 
         offspring = crossover(offspring,Pop,N,SELECROSS)
         
-        offspring = mutationReals(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN)
+        offspring = mutationGauss(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN)
 
         offspring = selectFitnessFunc(SELEFIT, offspring,Pop,N)
         
         population = minFitnessSave(population,offspring,Pop)
-
+        
         minEachGen.append(minFitness(population,Pop))
+        theBestSolutions.append(bestSolutionOfGen(population,Pop))
         meanFitnessGen.append(meanFitness(population,Pop))
 
-    return GenerationData(minEachGen, meanFitnessGen,MUTRATE)
+    return GenerationData(minEachGen, meanFitnessGen,theBestSolutions,MUTRATE)
 
 def plotGraph2D(testPara, genData):
     plt.figure(figsize=(20,10))
@@ -299,6 +322,18 @@ def plotGraph2D(testPara, genData):
     plt.legend(loc='best')
     plt.show()
 
+def plotGraph2DAverage(genData,MUTRATE,MUTSTEP):
+    plt.figure(figsize=(20,10))
+    plt.xlabel("Generations", fontsize=15)
+    plt.ylabel("Average Fitness for each generation",  fontsize=15)
+    plt.title("Average best fitness for each generation of ten runs of the system")
+
+    ypoints = np.array(genData)
+    plt.plot(ypoints, label="Average" + " " + str(MUTRATE) + " " + str(MUTSTEP))
+
+    plt.legend(loc='best')
+    plt.show()
+    
 def lowestInEachTest(genData):
     for i in range(0,len(genData)):
         minFitness = genData[i].best[0]
@@ -306,6 +341,21 @@ def lowestInEachTest(genData):
             if (genData[i].best[x] < minFitness):
                 minFitness = genData[i].best[x]
         print(minFitness)
+
+def lowestInEachTestAppend(genData):
+    main = []
+    for i in range(0,len(genData)):
+        minFitness = genData[i].best[0]
+        #bestSolution = []
+        for x in range(0,len(genData[i].best)):
+            if (genData[i].best[x] < minFitness):
+                minFitness = genData[i].best[x]
+                #bestSolution = copy.deepcopy(genData[i].bestSolutions[x])
+        main.append(minFitness)
+        #main.append(bestSolution)
+    return main
+
+
 """
     
 
@@ -331,16 +381,27 @@ def averageOverTests(testNo,test):
     allgen = []
     meanFitnessAdd = 0
     
+    for z in range(0, len(test)):# Takes final element in the best fitness array for a given run of the system
+        allgen.append(test[z].best[len(test[z].best) - 1])# appends to array
 
-    for z in range(0, len(test)):
-        
-        allgen = allgen + test[z].best
-
-    for x in range(0, len(allgen)):
+    #print(allgen)
+    for x in range(0, len(allgen)):#Finds average
         meanFitnessAdd = meanFitnessAdd + allgen[x]
     meanFitnessDiv = meanFitnessAdd / len(allgen)
+    
     return meanFitnessDiv
+def averageOverGen(test,GEN):
+    aver = []
+    for i in range(0,GEN):
+        allgen = []
+        meanFitnessAdd = 0
+        for z in range(0, len(test)):
+            allgen.append(test[z].best[i])
 
+        for x in range(0, len(allgen)):#Finds average
+            meanFitnessAdd = meanFitnessAdd + allgen[x]
+        aver.append(meanFitnessAdd / len(allgen))
+    return aver
 def testAverage(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT):  
     
     genData = []
@@ -368,25 +429,35 @@ def testIndiv(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SEL
 
     testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
     testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
+    testPara.append(TestParameters(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
     
     for i in range(0,len(testPara)):
         genData.append(GA(testPara[i].N,testPara[i].Pop,testPara[i].MUTRATE,testPara[i].MUTSTEP,testPara[i].GEN,testPara[i].MIN,testPara[i].MAX,testPara[i].SELECROSS, testPara[i].SELESELECT,testPara[i].SELEFIT))
     
-    plotGraph2D(testPara,genData)
-    lowestInEachTest(genData)
+    #plotGraph2D(testPara,genData)
+    print(averageOverTests(testNum,genData))
+    print(lowestInEachTestAppend(genData))
+    plotGraph2DAverage(averageOverGen(genData,GEN),MUTRATE,MUTSTEP)
+    
     #print(genData[0].best)
 
    
 
 def mainAverageTests():
     GEN = 1000
-    MUTSTEP = 20
+    MUTSTEP = 60    
     SELECROSS = 0
     SELESELECT = 0
     SELEFIT = 2
     MIN = -100
     MAX = 100
-    
     Pop = 100
     
     print(testAverage(1,20,Pop,0.009,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
@@ -404,9 +475,7 @@ def mainIndivTests():
     MIN = -100
     MAX = 100
 
-    testIndiv(1,20,50,0.07,50,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
-    testIndiv(1,20,50,0.01,10,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
+    testIndiv(1,20,150,0.019,15,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
 
-mainAverageTests()
-#mainIndivTests()
-
+#mainAverageTests()
+mainIndivTests()
