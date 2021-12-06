@@ -71,15 +71,18 @@ def fitnessFunc2(population,Pop,N):
     return population
 
 def fitnessFunc3(population,Pop,N):
-    for x in range(0, Pop):
+    for z in range(0, Pop):
         fitness = 0
-        step1 = 0
-        step2 = 0
-        for i in range(0,N):
-            step1 = step1 + (population[x].gene[i] ** 2) 
-            step2 = step2 + math.cos(2 * 3.14 * population[x].gene[i]) 
-        fitness = fitness + (-20 * ( math.exp(-0.2 * math.sqrt(step1 / N)) - math.exp(step2 / N) ) )
-        population[x].fitness = fitness
+        p1 = 0
+        p2 = 0
+        n = len(population[z].gene)
+        #the sum of both sigma formulas
+        for i in range(n):
+            x = population[z].gene[i]
+            p1 += x * x
+            p2 += math.cos(2 * math.pi * x)
+        fitness = -20 * math.exp(-0.2 * math.sqrt(p1 / n)) - math.exp(p2 / n)
+        population[z].fitness = fitness
     return population
 
 def selectFitnessFunc(num, population,Pop,N):
@@ -192,7 +195,7 @@ def mutationGauss(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN):
         for j in range(0, N): 
             MUTPROB = random.uniform(0.0, 1.0)
             if (MUTPROB < MUTRATE):
-                gaussian = random.gauss(0,0.0001)
+                gaussian = random.gauss(0,MUTSTEP)
                 offspring[i].gene[j] = offspring[i].gene[j] * gaussian
                 if (offspring[i].gene[j] > MAX):
                     offspring[i].gene[j] = MAX     
@@ -280,7 +283,7 @@ def GA(N,Pop,MUTRATE, MUTSTEP, GEN, MIN,MAX,SELECROSS,SELESelect,SELEFIT):
 
         offspring = crossover(offspring,Pop,N,SELECROSS)
         
-        offspring = mutationGauss(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN)
+        offspring = mutationReals(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN)
 
         offspring = selectFitnessFunc(SELEFIT, offspring,Pop,N)
         
@@ -402,6 +405,7 @@ def averageOverGen(test,GEN):
             meanFitnessAdd = meanFitnessAdd + allgen[x]
         aver.append(meanFitnessAdd / len(allgen))
     return aver
+
 def testAverage(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT):  
     
     genData = []
@@ -452,7 +456,7 @@ def testIndiv(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SEL
 
 def mainAverageTests():
     GEN = 1000
-    MUTSTEP = 60    
+    MUTSTEP = 10    
     SELECROSS = 0
     SELESELECT = 0
     SELEFIT = 2
@@ -471,11 +475,11 @@ def mainIndivTests():
     GEN = 1000
     SELECROSS = 0
     SELESELECT = 0
-    SELEFIT = 2
-    MIN = -100
-    MAX = 100
+    SELEFIT = 3
+    MIN = -32
+    MAX = 32
 
-    testIndiv(1,20,150,0.019,15,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
+    testIndiv(1,20,100,0.1,5,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
 
-#mainAverageTests()
-mainIndivTests()
+mainAverageTests()
+#mainIndivTests()
