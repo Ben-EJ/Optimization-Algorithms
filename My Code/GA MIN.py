@@ -63,25 +63,21 @@ def fitnessFunc2(population,Pop,N):
         for i in range(0, N - 1):
             step1 = 0
             step2 = 0
-            step1 = ((population[x].gene[i + 1] - (population[x].gene[i] * population[x].gene[i])) * (population[x].gene[i + 1] - (population[x].gene[i] * population[x].gene[i])))
-            step2 = (1 - population[x].gene[i]) * (1 - population[x].gene[i])
+            step1 = ((population[x].gene[i + 1] - (population[x].gene[i + 1] ** 2) ) ** 2)
+            step2 = (1 - population[x].gene[i]) ** 2
             fitness = fitness + ((100 * step1) + step2)
-
         population[x].fitness = fitness
     return population
 
 def fitnessFunc3(population,Pop,N):
     for z in range(0, Pop):
         fitness = 0
-        p1 = 0
-        p2 = 0
-        n = len(population[z].gene)
-        #the sum of both sigma formulas
-        for i in range(n):
-            x = population[z].gene[i]
-            p1 += x * x
-            p2 += math.cos(2 * math.pi * x)
-        fitness = -20 * math.exp(-0.2 * math.sqrt(p1 / n)) - math.exp(p2 / n)
+        step1 = 0
+        step2 = 0
+        for i in range(N):
+            step1 += population[z].gene[i] ** 2
+            step2 += math.cos(2 * math.pi * population[z].gene[i])
+        fitness = -20 * math.exp(-0.2 * math.sqrt(step1 / N)) - math.exp(step2 / N)
         population[z].fitness = fitness
     return population
 
@@ -111,7 +107,7 @@ def selectionTour(population,Pop):
 def popFitTotal(population,Pop):
     totalFit = 0
     for i in range(0, Pop):
-        totalFit = totalFit + (1.0 - population[i].fitness)
+        totalFit = totalFit + (1 / population[i].fitness)
     return totalFit
 
 def rouletteWheel(population,Pop):
@@ -122,7 +118,7 @@ def rouletteWheel(population,Pop):
         running_total  = 0 
         j = 0
         while ( running_total <= selection_point ):
-            running_total += population[j].fitness
+            running_total += 1 / population[j].fitness
             j = j + 1 
         offspring.append(population[j-1])
     return offspring
@@ -260,12 +256,6 @@ def printMean(meanFitnessGen):
     for i in range(0, len(meanFitnessGen)):
         print(meanFitnessGen[i]) 
 
-"""
-Gousian mutation algorithm try it - Larry suggestion
-https://ieeexplore-ieee-org.ezproxy.uwe.ac.uk/stamp/stamp.jsp?tp=&arnumber=489178
-random.gauss(0, 0.5)
-"""
-
 def GA(N,Pop,MUTRATE, MUTSTEP, GEN, MIN,MAX,SELECROSS,SELESelect,SELEFIT):
     population = []
     offspring = []
@@ -283,14 +273,14 @@ def GA(N,Pop,MUTRATE, MUTSTEP, GEN, MIN,MAX,SELECROSS,SELESelect,SELEFIT):
 
         offspring = crossover(offspring,Pop,N,SELECROSS)
         
-        offspring = mutationReals(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN)
+        offspring = mutationGauss(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN)
 
         offspring = selectFitnessFunc(SELEFIT, offspring,Pop,N)
         
         population = minFitnessSave(population,offspring,Pop)
         
         minEachGen.append(minFitness(population,Pop))
-        theBestSolutions.append(bestSolutionOfGen(population,Pop))
+      
         meanFitnessGen.append(meanFitness(population,Pop))
 
     return GenerationData(minEachGen, meanFitnessGen,theBestSolutions,MUTRATE)
@@ -310,29 +300,16 @@ def plotGraph2D(testPara, genData):
     plt.legend(loc='best')
     plt.show()
 
-def plotGraph2D(testPara, genData):
-    plt.figure(figsize=(20,10))
-    plt.xlabel("Generation", fontsize=15)
-    plt.ylabel("Min fitness",  fontsize=15)
-    plt.title("GA Graph")
-
-    for x in range(0, len(testPara)):
-        ypoints = np.array(genData[x].best)
-        zpoints = np.array(genData[x].mean)
-        plt.plot(ypoints, label="Best" + " " + str(genData[x].MUTRATE))
-        plt.plot(zpoints ,label="Mean" + " " + str(genData[x].MUTRATE))
-
-    plt.legend(loc='best')
-    plt.show()
-
-def plotGraph2DAverage(genData,MUTRATE,MUTSTEP):
+def plotGraph2DAverage(genData,mean,MUTRATE,MUTSTEP):
     plt.figure(figsize=(20,10))
     plt.xlabel("Generations", fontsize=15)
     plt.ylabel("Average Fitness for each generation",  fontsize=15)
-    plt.title("Average best fitness for each generation of ten runs of the system")
+    plt.title("Genetic Algorithm results over 10 runs of the system")
 
     ypoints = np.array(genData)
-    plt.plot(ypoints, label="Average" + " " + str(MUTRATE) + " " + str(MUTSTEP))
+    y2points = np.array(mean)
+    plt.plot(ypoints, label="Best Fitness over 10 runs" + " " + str(MUTRATE) + " " + str(MUTSTEP))
+    plt.plot(y2points, label="Average Fitness over 10 runs")
 
     plt.legend(loc='best')
     plt.show()
@@ -393,6 +370,7 @@ def averageOverTests(testNo,test):
     meanFitnessDiv = meanFitnessAdd / len(allgen)
     
     return meanFitnessDiv
+
 def averageOverGen(test,GEN):
     aver = []
     for i in range(0,GEN):
@@ -400,6 +378,19 @@ def averageOverGen(test,GEN):
         meanFitnessAdd = 0
         for z in range(0, len(test)):
             allgen.append(test[z].best[i])
+
+        for x in range(0, len(allgen)):#Finds average
+            meanFitnessAdd = meanFitnessAdd + allgen[x]
+        aver.append(meanFitnessAdd / len(allgen))
+    return aver
+
+def averageMeanOverGen(test,GEN):
+    aver = []
+    for i in range(0,GEN):
+        allgen = []
+        meanFitnessAdd = 0
+        for z in range(0, len(test)):
+            allgen.append(test[z].mean[i])
 
         for x in range(0, len(allgen)):#Finds average
             meanFitnessAdd = meanFitnessAdd + allgen[x]
@@ -448,23 +439,22 @@ def testIndiv(testNum,N,Pop,MUTRATE,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SEL
     #plotGraph2D(testPara,genData)
     print(averageOverTests(testNum,genData))
     print(lowestInEachTestAppend(genData))
-    plotGraph2DAverage(averageOverGen(genData,GEN),MUTRATE,MUTSTEP)
+    plotGraph2DAverage(averageOverGen(genData,GEN),averageMeanOverGen(genData,GEN),MUTRATE,MUTSTEP)
     
     #print(genData[0].best)
 
    
 
 def mainAverageTests():
-    GEN = 1000
-    MUTSTEP = 10    
+    GEN = 500
+    MUTSTEP = 60    
     SELECROSS = 0
     SELESELECT = 0
     SELEFIT = 2
     MIN = -100
     MAX = 100
-    Pop = 100
+    Pop = 50
     
-    print(testAverage(1,20,Pop,0.009,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
     print(testAverage(1,20,Pop,0.01,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
     print(testAverage(1,20,Pop,0.02,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
     print(testAverage(1,20,Pop,0.03,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
@@ -472,14 +462,14 @@ def mainAverageTests():
     print(testAverage(1,20,Pop,0.05,MUTSTEP,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT))
 
 def mainIndivTests():
-    GEN = 1000
+    GEN = 500
     SELECROSS = 0
     SELESELECT = 0
     SELEFIT = 3
-    MIN = -32
+    MIN = -32  
     MAX = 32
 
-    testIndiv(1,20,100,0.1,5,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
+    testIndiv(1,20,200,0.015,1,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
 
-mainAverageTests()
-#mainIndivTests()
+#mainAverageTests()
+mainIndivTests()
