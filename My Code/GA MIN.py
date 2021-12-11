@@ -273,7 +273,7 @@ def GA(N,Pop,MUTRATE, MUTSTEP, GEN, MIN,MAX,SELECROSS,SELESelect,SELEFIT):
 
         offspring = crossover(offspring,Pop,N,SELECROSS)
         
-        offspring = mutationReals(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN)
+        offspring = mutationGauss(offspring,Pop,N,MUTRATE,MUTSTEP,MAX,MIN)
 
         offspring = selectFitnessFunc(SELEFIT, offspring,Pop,N)
         
@@ -465,11 +465,11 @@ def mainIndivTests():
     GEN = 500
     SELECROSS = 0
     SELESELECT = 0
-    SELEFIT = 3
-    MIN = -32  
-    MAX = 32
+    SELEFIT = 2
+    MIN = -100  
+    MAX = 100
 
-    testIndiv(1,20,100,0.015,1,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
+    testIndiv(1,20,300,0.015,20,GEN,MIN,MAX,SELECROSS,SELESELECT,SELEFIT)
 
 #mainAverageTests()
 mainIndivTests()
