@@ -1,4 +1,4 @@
-# Research Paper
+# Optimization Algorithms
 
 # Introduction 
 In this paper I intend to research and compare Artificial bee colony and genetic algorithms. Also compare several different genetic algorithm operators and to optimize the Rosenbrock and Ackley fitness functions. 
