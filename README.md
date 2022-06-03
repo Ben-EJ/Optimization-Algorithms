@@ -33,7 +33,7 @@ A heat map is provided for the mutation sweep for both RosenBrock and Ackley. Th
 
 ## Rosenbrock
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture1.jpg)
 
 The table above shows a collection of data produced by a mutation rate and mutstep sweep to find the best possible combination of mutation rate and mutstep values. Each fitness value is produced by a test set contains a set of 10 individual test where the same test with the same parameters is run 10 times, this is to account for the inconsistent results obtained when these tests are run due to the fact that mutation rate and population generation is random the results can vary quite a lot. 
 
@@ -44,102 +44,102 @@ The other parameters are as follows, population: 100, generations: 500, and the 
 As can be seen from the mutation sweep for the Rosenbrock fitness function the best fitness is 5.098354862184059 Meaning a mutation rate of 0.02 and a mutstep of 10 is a good starting point to tune the mutation rate and step further. 
 
 ### 100 Pop, Mutstep 0.025 and 10 Mutstep
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture2.jpg)
 
 First testing 0.025 and 10 seemed like the most logical option to try first, as the best finesses are obtained between 0.01 and 0.03, this is done with 100 Population and over 500 generations. As can be seen from both the graph above and the table below, with the increase of mutrate the fitness increased compared to the last run there by meaning it is a good idea to try a much lower mutrate value.
 
 Average: 6.675185664522118
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture3.jpg)
 
 As can be seen from this graph it appears to show premature convergence, however zooming in to the end of the graph shows a something different.
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture4.jpg)
 
 The graph shows however that this is not the case both the average and the best lines are running parallel to each other and separated not running on top of each other this indicates that the algorithm is still searching and has not converged on one solution.
 
 ### 100 Pop, Mutstep 0.015 and 10 Mutstep
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture5.jpg)
 
 Decreasing the mutrate to 0.015 as the mutrate between 0.01 and 0.3 gave the best results we get a slight decrease in fitness. 
 
 Average: 5.2300703115953135
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture6.jpg)
 
 As can be seen from this graph compared to the last, both lines have gotten closer together rather than further apart meaning we are on the right track in terms of mutrate and mutstep combination, as the opposite would be true if it was a poor combination of the two.
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture7.jpg)
 
 The end of the graph lines being separated and running parallel still indicate the search process is continuing.
 
 ### 100 Pop, Mutstep 0.015 and 5 Mutstep
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture8.jpg)
 
 Decreasing the mutstep further produces less dramatic changes to genes resulting in even better gene fitness as can be seen bellow.
 
 Average: 2.395774327981293
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture9.jpg)
 
 Again, the lines show convergence however this is not the case as can be seen bellow. 
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture10.jpg)
 
 As can be seen again from this graph although it appears to be converging, further analysis concludes that it is not, by zooming in to the end of the graph the lines are running parallel indicating it’s still searching.
 
 ### 100 Pop, Mutstep 0.015 and 2 Mutstep
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture11.jpg)
 
 After analysing both the graph and individual best fitness of each of the test runs the reduction of mutstep further produces to fewer changes to genes, resulting in less new genetic information being added to remove from genes resulting in a worse overall fitness as the GA is getting stuck in the local optimum rather than the global optimum.
 
 Average: 1330.460778658239
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture12.jpg)
 
 Both these graphs (Above and below) further clarify the fact decreasing the mutstep further has caused the fitness to increase and the search to be affected dramatically as the lines in the above graph are taking much longer to converge. The previous graph starts to converge around gen 25 whereas this run is starting to converge around 30 gens.
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture13.jpg)
 
 To achieve the optimum, it may require reverting to the previous best mutrate and mutesteps and increasing the population count as decreasing or increasing Mutrate and mutstep at this point does not yield any better results.
 
 ### 200 pop, Mutstep 0.015 and 5 Mutstep
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture14.jpg)
 
 After reverting to the best mutrate and mutstep of previous tests and increasing the population it is clear now the fitness is decreasing to much lower values than previously seen in testing. Although increasing the population does affect the efficiency of the genetic algorithm meaning it will take longer to give an output.
 
 Average: 0.8083008653085122
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture15.jpg)
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture16.jpg)
 
 Further increase to the population is the best course of action after analysing results as this should lead to a further reduction in fitness.
 
 ### 300 Pop, Mutstep 0.015 and 5 Mutstep
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture17.jpg)
 
 After further increases to the population count the resulting fitness values have again decreased further. However, this has yet again made the GA more in efficient and has produced even slower run times for the system.
 
 Average: 0.36067163746478637
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture18.jpg)
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture19.jpg)
 
 ## Ackley
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture20.jpg)
 
 Using the same testing method as the RosenBrock function we can see that -22.24231355118912 is the smallest fitness in this mutation sweep. Therefore, the best starting point for experimentation is 0.02, 10.
 
 ### 100 Pop, Mutstep 0.025 and 10 Mutstep
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture21.jpg)
 
 First testing a higher mutrate than the given best combination in the mutation sweep, yield as expected worse results but this is done to get the upper bounds for testing to see how high we can increase the mutrate before drastic changes occur as the best results were found between a mutrate of 0.01 and 0.03, it is clear from this test that we should not increase the mutrate any higher than 0.025. The lines in the graph spreading apart would indicate that there is too much mutation going on this will be reduced in the next test.
 
@@ -147,7 +147,7 @@ Average: -22.444862330907235
 
 ### 100 Pop, Mutstep 0.015 and 10 Mutstep
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture22.jpg)
 
 After decreasing both mutrate and mutstep to 0.015 and 10 it is clear that the lines have come further together and starting from this point and working our way down in terms of mutstep is the best option, as in this case as a slightly lower mutrate and mutstep than the best combination in our mutation sweep has given better results.
 
@@ -155,7 +155,7 @@ Average Fitness: -22.477837934574517
 
 ### 100 Pop, Mutstep 0.015 and 5 Mutstep
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture23.jpg)
 
 Further testing with a smaller mutstep shows the lines coming closer together rather than further apart, however they still are not quite parallel indicating that too much mutation is still proving to be an issue a further reduction is still required.
 
@@ -163,7 +163,7 @@ Average: -22.60814577345934
 
 ### 100 Pop, Mutstep 0.015 and 2 Mutstep
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture24.jpg)
 
 After further reducing the mutstep the lines are running almost parallel indicating we are getting closer the right amount of mutation required to find the optimum solution. Further reduction of mutrate however would likely lead to less optimal results as genes would mutate rarely and with little change when they do mutate and further reduction of mutstep would cause similar issues and thereby increasing the average fitness. The most logical next step would be to increase the population count.
 
@@ -171,7 +171,7 @@ Average: -22.67215876935784
 
 ### 200 pop, Mutstep 0.015 and 1 Mutstep
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture25.jpg)
 
 After increasing the population count the lines continued to coverage and are now running parallel indicating it is very close to the optimal solution, a further increase to the population should yield even better results.
 
@@ -179,7 +179,7 @@ Average: -22.702901846403094
 
 ### 300 pop, Mutstep 0.015 and 1 Mutstep
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture26.jpg)
 
 Further increase to the population count has yielded better results but only slightly. We can there for conclude that this is indeed the optimum or extremely close.
 
@@ -191,17 +191,17 @@ All parameters chosen for testing these operators were the best parameters found
 
 ## Crossover – Multipoint
 ### Rosen Brock fitness:
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture27.jpg)
 
 Average: 0.25844865889669955
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture28.jpg)
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture29.jpg)
 
 ### Ackley fitness:
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture30.jpg)
 
 Average: -22.704808181649533
 
@@ -211,18 +211,18 @@ Comparing multipoint crossover to single point crossover we can see that it prov
 ## Selection – Roulette wheel
 ### Rosen Brock fitness:
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture31.jpg)
 
 Average: 3.6298063060367944
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture32.jpg)
 
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture33.jpg)
 
 ### Ackley Fitness:
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture34.jpg)
 
 Average: -3.1221355335396783
 
@@ -231,23 +231,23 @@ From analysing the results, it is clear that roulette wheel selection has perfor
 
 ## Mutation – Gaussian Mutation
 ### Rosenbrock fitness:
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture35.jpg)
 
 Average: 4.532769917491803
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture36.jpg)
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture37.jpg)
 
 ### Ackley Fitness:
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture38.jpg)
 
 Average: -22.718281828458807
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture39.jpg)
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture40.jpg)
 
 ### Analysis: 
 The mean and standard deviation are parameters that must be adjusted like MUTSTEP, so the best mutrate values that were obtained through testing are not going to provide the best results necessarily. In the instance of the first test with gaussian mutation on the rosenbrock function however, it appears that it has done significantly worse, it is likely the deviation and will need to be increased to see better results with that function as currently the values that will be in the gaussian mutation value will be too small to see any effect when mutating, alternatively the mutation rate could be increased to induce mutation more often. 
@@ -258,24 +258,24 @@ The Ackley function however is a different story and has been significantly impr
 These are the results obtained by running Yarpiz (2015) artificial bee colony source code.
 ## Rosenbrock:
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture41.jpg)
 
 Rosenbrock function used in MATLAB code.
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture42.jpg)
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture43.jpg)
 
 ## Ackley:
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture44.jpg)
 
 Ackley function used in MATLAB code.
 
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture45.jpg)
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/Ben-EJ/BioCompResearchProject/blob/main/Report/Research%20Paper%20Figures/Picture46.jpg)
 
 ## Analysis:
 Both the ABC algorithm selected, and the genetic algorithm used in testing are using the same population count and epoch amount and number of values in each solution, 300, 500 and 20 respectively. 
