@@ -189,4 +189,112 @@ Average: -22.7079392982269
 
 All parameters chosen for testing these operators were the best parameters found in prior testing for the Rosenbrock and Ackley function respectively.  Unless specified otherwise.
 
+## Crossover – Multipoint
+### Rosen Brock fitness:
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+Average: 0.25844865889669955
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+### Ackley fitness:
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+Average: -22.704808181649533
+
+### Analysis: 
+Comparing multipoint crossover to single point crossover we can see that it provides slightly better results in both tests with Rosenbrock and Ackley. Due to the low gene count however, crossover does not have as greater of an effect as mutation would have for example on the search process. If we were to increase this, a greater change would be observed.
+
+## Selection – Roulette wheel
+### Rosen Brock fitness:
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+Average: 3.6298063060367944
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+### Ackley Fitness:
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+Average: -3.1221355335396783
+
+### Analysis: 
+From analysing the results, it is clear that roulette wheel selection has performed worse in this case, this is because this type of selection performs worse with higher amounts of chromosomes within genes, furthermore if all solutions to be selected from have almost identical fitness values, then the chances of each solution being selected are very similar resulting in slightly worse solutions being selected more often. 
+
+## Mutation – Gaussian Mutation
+### Rosenbrock fitness:
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+Average: 4.532769917491803
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+### Ackley Fitness:
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+Average: -22.718281828458807
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+### Analysis: 
+The mean and standard deviation are parameters that must be adjusted like MUTSTEP, so the best mutrate values that were obtained through testing are not going to provide the best results necessarily. In the instance of the first test with gaussian mutation on the rosenbrock function however, it appears that it has done significantly worse, it is likely the deviation and will need to be increased to see better results with that function as currently the values that will be in the gaussian mutation value will be too small to see any effect when mutating, alternatively the mutation rate could be increased to induce mutation more often. 
+
+The Ackley function however is a different story and has been significantly improved with identical parameters to the parameters found in previous tests. This is likely because the Ackley function uses a smaller min and max values meaning less will have to be added or taken away from chromosomes to make a difference.
+
+# Comparing ABC and GA performance
+These are the results obtained by running Yarpiz (2015) artificial bee colony source code.
+## Rosenbrock:
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+Rosenbrock function used in MATLAB code.
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+## Ackley:
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+Ackley function used in MATLAB code.
+
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+## Analysis:
+Both the ABC algorithm selected, and the genetic algorithm used in testing are using the same population count and epoch amount and number of values in each solution, 300, 500 and 20 respectively. 
+
+It is clear from the ABC Rosenbrock results that it performed significantly worse than the genetic algorithm and the opposite is true comparing the results of the Ackley functions. 
+
+This implementation of the bee algorithm utilises roulette wheel selection. In the tested genetic algorithm, this was proven to perform poorly compared with other selection operators, the reason why Rosen brock function performance was so poor could be related with this issue. I.E a greater number of chromosomes in genes results in poorer performance because you are adding more and more dimensions.
+
+# Conclusion:
+In conclusion, from the tests run we can conclude a higher mutrate and mutstep does not provide better results because having too higher of either of these make to dramatic changes on genes resulting on a dramatically increased or decreased fitness. Furthermore, some genetic algorithm operators perform better in some circumstances and worse in others for example roulette wheel selection performing better with fewer chromosomes within genes. If given an opportunity to runs tests a second time, there are a few things I would do differently, including test a wider verity of GA operators and run similar comparisons between ABC and GA but test different ABC algorithms against the GA algorithm to see how they perform.
+
+# References:
+Karaboga, Akay, D.K, B.A. (2009) A comparative study of Artificial Bee Colony algorithm, Applied Mathematics and Computation [Online]. Volume 214, Pages 108-132 [Accessed 01 December 2021]
+
+Karaboga, Basturk, D.K, B.B. (2007) A powerful and efficient algorithm for numerical function optimization: artificial bee colony (ABC) algorithm. Journal of Global Optimization[online]. Volume 39, Issue 3. [Accessed 29 November 2021]
+
+Karaboga, Gorkemli, Ozturk, D.K, G.B, C.O. (2014) A comprehensive survey: artificial bee colony (ABC) algorithm and applications. Artificial Intelligence Review [online]. Volume 42, Issue 3. [Accessed 30 November 2021]
+
+Yarpiz (2015) Artificial Bee Colony (ABC) in MATLAB (version 1.0.0.0) [Source Code]. Available from: https://uk.mathworks.com/matlabcentral/fileexchange/52966-artificial-bee-colony-abc-in-matlab [Accessed 4 December 2021]
+
+
 
